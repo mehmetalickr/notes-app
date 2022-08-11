@@ -14,6 +14,7 @@
 		472CE81528A5387A00CC41EB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 472CE81328A5387A00CC41EB /* LaunchScreen.storyboard */; };
 		472CE82128A5449000CC41EB /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE82028A5449000CC41EB /* NotesViewController.swift */; };
 		472CE82328A5461500CC41EB /* NotesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE82228A5461500CC41EB /* NotesInteractor.swift */; };
+		472CE82528A5465500CC41EB /* NotesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE82428A5465500CC41EB /* NotesPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		472CE81628A5387A00CC41EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		472CE82028A5449000CC41EB /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
 		472CE82228A5461500CC41EB /* NotesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesInteractor.swift; sourceTree = "<group>"; };
+		472CE82428A5465500CC41EB /* NotesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				472CE80C28A5387600CC41EB /* ViewController.swift */,
 				472CE82028A5449000CC41EB /* NotesViewController.swift */,
 				472CE82228A5461500CC41EB /* NotesInteractor.swift */,
+				472CE82428A5465500CC41EB /* NotesPresenter.swift */,
 				472CE81128A5387A00CC41EB /* Assets.xcassets */,
 				472CE81328A5387A00CC41EB /* LaunchScreen.storyboard */,
 				472CE81628A5387A00CC41EB /* Info.plist */,
@@ -140,6 +143,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				472CE82528A5465500CC41EB /* NotesPresenter.swift in Sources */,
 				472CE82128A5449000CC41EB /* NotesViewController.swift in Sources */,
 				472CE80D28A5387600CC41EB /* ViewController.swift in Sources */,
 				472CE80928A5387600CC41EB /* AppDelegate.swift in Sources */,
