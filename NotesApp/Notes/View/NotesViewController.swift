@@ -9,24 +9,29 @@ import SnapKit
 import UIKit
 
 
-class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NotesViewManageable {
+    
+    var presenter: NotesPresentable!
     var tableView = UITableView()
     
     private var notes: [NoteModel] = []
-    var presenter: ViewToPresenterProtocol?
-
+    
     // MARK: - UIViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Notes"
-        setupTableView()
-        setupAddNoteButton()
+        setupUI()
         view.backgroundColor = Style.viewBackgroundColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
         presenter?.loadNotes()
+    }
+    
+    // MARK: - Setup UI
+    func setupUI() {
+        setupTableView()
+        setupAddNoteButton()
     }
     
     // MARK: - Setup View
@@ -38,12 +43,23 @@ class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDat
         configureTableViewConstraints()
         tableView.backgroundColor = Style.tableViewBackgroundColor
         self.tableView.layer.cornerRadius = Style.tableViewCornerRadius
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
+    // MARK: - Table View Delegate
+    func setTableViewDelegates() {
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    // MARK: - Setup Add Note Button
     func setupAddNoteButton() {
         let button = UIButton()
         self.view.addSubview(button)
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: Style.addNoteButtonSize,
+                                                      weight: .bold,
+                                                      scale: .large)
         let image = UIImage(systemName: "note.text.badge.plus", withConfiguration: imageConfig)
         button.tintColor = UIColor.systemYellow
         button.setImage(image, for: .normal)
@@ -55,12 +71,6 @@ class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    // MARK: - Table View Delegate
-    func setTableViewDelegates() {
-        tableView.delegate = self
-        tableView.dataSource = self
-    }
-    
     // MARK: - Configure Constraints
     func configureTableViewConstraints() {
         tableView.snp.makeConstraints { make in
@@ -70,20 +80,16 @@ class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    @objc func addNoteButtonTapped(sender: UIButton) {
-//            presenter?.addNote()
-        self.navigationController?.pushViewController(NoteDetailsViewController(), animated: false)
-        }
-    
+    // MARK: - Table View Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notes.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "noteCell", for: indexPath)
         cell.textLabel?.text = notes[indexPath.row].title
         cell.detailTextLabel?.text = notes[indexPath.row].content
-
+        
         return cell
     }
     
@@ -91,3 +97,21 @@ class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+
+extension NotesViewController {
+    
+    @objc func addNoteButtonTapped() {
+        presenter.userDidTapAddNoteButton()
+    }
+    
+    func viewNotes(notes: [NoteModel]) {
+        self.notes = notes
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+}
+
+   
+

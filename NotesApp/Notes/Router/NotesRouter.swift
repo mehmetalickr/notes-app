@@ -7,3 +7,11 @@
 
 import UIKit
 
+class NotesRouter: NotesRoutable {
+    weak var viewController: UIViewController!
+    
+    func showNotesDetail() {
+        viewController.navigationController?.pushViewController(NotesDetailBuilder.build(), animated: false)
+    }
+
+}
