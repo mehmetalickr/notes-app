@@ -7,43 +7,39 @@
 
 import UIKit
 
-protocol PresenterToViewProtocol: AnyObject {
+protocol NotesViewManageable: AnyObject {
+    var presenter: NotesPresentable! { get set }
     func viewNotes(notes: [NoteModel])
 }
 
-protocol ViewToPresenterProtocol: AnyObject {
-    var view: PresenterToViewProtocol? { get set }
-    var interactor: PresenterToInteractorProtocol? { get set }
-    var router: PresenterToRouterProtocol? { get set }
+protocol NotesPresentable: AnyObject {
+    var view: NotesViewManageable! { get set }
+    var interactor: NotesInputInteractable! { get set }
+    var router: NotesRoutable! { get set }
     
-    func addNote()
+    func userDidTapAddNoteButton()
     func loadNotes()
-    func showNoteDetails(selectedNote: NoteModel)
     func removeNote(id: Int)
-}
+    }
 
-protocol PresenterToInteractorProtocol: AnyObject {
-    var presenter: InteractorToPresenterProtocol? { get set }
-    
-    func didTapSave(note: NoteModel)
+protocol NotesInputInteractable: AnyObject {
+    var presenter: NotesOutputInteractable! { get set }
     func fetchNotes()
     func deleteNote(id: Int)
 }
 
-protocol InteractorToPresenterProtocol: AnyObject {
+protocol NotesOutputInteractable: AnyObject {
     func notesFetched(notes: [NoteModel])
 }
 
-protocol PresenterToRouterProtocol: AnyObject {
-    func routeToNoteDetails(selectedNote: NoteModel)
+protocol NotesRoutable: AnyObject {
+    var viewController: UIViewController! { get set }
+    func showNotesDetail()
 }
 
-protocol ViewToRouterProtocol: AnyObject {
-    var view: RouterToViewProtocol { get set }
+protocol NotesBuildable {
+    static func build() -> NotesViewController
 }
 
-protocol RouterToViewProtocol: AnyObject {
-    func showAlert(alert: UIAlertController)
-    func showModule(view: UIViewController)
-}
+
 

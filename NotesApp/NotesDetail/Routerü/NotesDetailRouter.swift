@@ -7,3 +7,6 @@
 
 import UIKit
 
+class NotesDetailRouter: NotesDetailRoutable {
+    var viewController: UIViewController!
+}
