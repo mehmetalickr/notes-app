@@ -10,8 +10,8 @@ import UIKit
 
 
 class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NotesViewManageable {
-    
     var presenter: NotesPresentable!
+    
     var tableView = UITableView()
     
     private var notes: [NoteModel] = []
@@ -39,12 +39,12 @@ class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDat
         view.addSubview(tableView)
         setTableViewDelegates()
         tableView.rowHeight = Style.tableViewRowHeight
-        //register cells
-        configureTableViewConstraints()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noteCell")
         tableView.backgroundColor = Style.tableViewBackgroundColor
         self.tableView.layer.cornerRadius = Style.tableViewCornerRadius
         tableView.delegate = self
         tableView.dataSource = self
+        configureTableViewConstraints()
     }
     
     // MARK: - Table View Delegate
@@ -71,7 +71,7 @@ class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    // MARK: - Configure Constraints
+    // MARK: - Configure Table View Constraints
     func configureTableViewConstraints() {
         tableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(30)
@@ -100,7 +100,8 @@ class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
 extension NotesViewController {
     
-    @objc func addNoteButtonTapped() {
+    @objc
+    func addNoteButtonTapped() {
         presenter.userDidTapAddNoteButton()
     }
     

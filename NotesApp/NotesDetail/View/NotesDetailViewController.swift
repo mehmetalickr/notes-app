@@ -5,8 +5,8 @@
 //  Created by Mehmet Ali ÇAKIR on 14.08.2022.
 //
 
-import UIKit
 import SnapKit
+import UIKit
 
 class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, NotesDetailViewManageable {
     var presenter: NotesDetailPresentable!
@@ -14,19 +14,16 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
     var titleTextField = UITextField()
     var contentTextView = UITextView()
     
-    public var completion: ((String, String) -> Void)?
-    
-    
     // MARK: - UIViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
         view.backgroundColor = Style.viewBackgroundColor
-        presenter?.showNote()
+        setupUI()
+        //presenter?.showNote()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        presenter?.editNote(title: titleTextField.text ?? "", content: contentTextView.text)
+        //presenter?.editNote(title: titleTextField.text ?? "", content: contentTextView.text)
     }
     
     // MARK: - Setup UI
@@ -41,6 +38,8 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
         titleTextField.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         titleTextField.backgroundColor = Style.viewBackgroundColor
         titleTextField.borderStyle = UITextField.BorderStyle.roundedRect
+        titleTextField.layer.borderWidth = 1
+        titleTextField.layer.borderColor = UIColor.systemYellow.cgColor
         titleTextField.layer.cornerRadius = Style.tableViewCornerRadius
         titleTextField.textAlignment = .center
         titleTextField.keyboardType = UIKeyboardType.default
@@ -68,28 +67,25 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
     }
     
     // MARK: - Setup Save Button
-    func setupSaveButton() {
-        let button = UIButton()
-        self.view.addSubview(button)
-        button.setTitle("Save", for: .normal)
-        button.setTitleColor(UIColor.systemYellow, for: .normal)
-        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
-        button.snp.makeConstraints { make in
-            make.trailing.equalTo(view.snp.trailing).inset(20)
-            make.top.equalTo(view.snp.top).inset(60)
-        }
+    func setupSaveButton() -> UINavigationItem {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save",
+                                                                 style: .done,
+                                                                 target: self,
+                                                                 action: #selector(saveButtonTapped))
+        self.navigationController?.navigationBar.tintColor = UIColor.systemYellow
+        return navigationItem
     }
     
     // MARK: - Configure Title Text Field Constraints
     func configureTitleTextFieldConstraints() {
         titleTextField.snp.makeConstraints { make in
-            make.height.equalTo(40)
+            make.height.equalTo(50)
             make.leading.trailing.equalToSuperview().inset(20)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
     }
     
-    // MARK: - Configure Content Text Field Constraints
+    // MARK: - Configure Content Text View Constraints
     func configureContentTextViewConstraints() {
         contentTextView.snp.makeConstraints { make in
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
@@ -117,9 +113,12 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
 }
 
 extension NotesDetailViewController {
-    @objc func saveButtonTapped() {
+    
+    @objc
+    func saveButtonTapped() {
         print("Save Note Button Tapped")
-        presenter.userDidTapSaveButton()
+        presenter.userDidTapSaveButton(title: titleTextField.text,
+                                       content: contentTextView.text)
     }
 }
 

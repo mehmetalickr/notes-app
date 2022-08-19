@@ -34,7 +34,8 @@ protocol NotesOutputInteractable: AnyObject {
 
 protocol NotesRoutable: AnyObject {
     var viewController: UIViewController! { get set }
-    func showNotesDetail()
+    func showNotesDetail(operationType: NotesDetailOperationType,
+                         moduleDelegate: NotesDetailModuleDelegate?)
 }
 
 protocol NotesBuildable {

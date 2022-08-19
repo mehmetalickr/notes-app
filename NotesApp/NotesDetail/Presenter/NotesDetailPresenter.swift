@@ -11,28 +11,40 @@ class NotesDetailPresenter: NotesDetailPresentable {
     weak var view: NotesDetailViewManageable!
     var interactor: NotesDetailInputInteractable!
     var router: NotesDetailRoutable!
-    var note: NoteModel!
+    private let operationType: NotesDetailOperationType
+    private weak var moduleDelegate: NotesDetailModuleDelegate?
     
-    func userDidTapSaveButton() {
-        self.interactor.saveNotes(note: note)
+    init(operationType: NotesDetailOperationType,
+         moduleDelegate: NotesDetailModuleDelegate? = nil) {
+        self.operationType = operationType
+        self.moduleDelegate = moduleDelegate
+    }
+    
+    func userDidTapSaveButton(title: String?, content: String?) {
+        switch operationType {
+        case .add:
+            interactor.createNote(title: title, content: content)
+        case .update:
+            break
+        }
+//        self.interactor.saveNotes(note: note)
     }
     
     func showNote() {
-        guard let note = note else { return }
-        view?.viewNotes(title: note.title, content: note.content)
+//        view?.viewNotes(title: note.title, content: note.content)
     }
     
     func editNote(title: String, content: String) {
-        guard var note = note else { return }
-        note.title = title
-        note.content = content
-        interactor?.saveNotes(note: note)
+//        note.title = title
+//        note.content = content
+//        interactor?.saveNotes(note: note)
     }
 }
 
 extension NotesDetailPresenter: NotesDetailOutputInteractable {
-    func notesUpdated(notes: [NoteModel]) {
-        
+    func noteUpdated(note: NoteModel) {
+        moduleDelegate?.notesUpdated(with: note)
+        router.popToMain()
     }
 }
 

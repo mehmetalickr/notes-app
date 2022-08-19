@@ -8,7 +8,7 @@
 import UIKit
 
 protocol NotesDetailModuleDelegate: AnyObject {
-    func noteSaved(note: NoteModel)
+    func notesUpdated(with note: NoteModel)
 }
 
 protocol NotesDetailViewManageable: AnyObject {
@@ -21,24 +21,29 @@ protocol NotesDetailPresentable: AnyObject {
     var interactor: NotesDetailInputInteractable! { get set }
     var router: NotesDetailRoutable! { get set }
     
-    func userDidTapSaveButton()
-    func showNote()
-    func editNote(title: String, content: String)
+    func userDidTapSaveButton(title: String?, content: String?)
+    //func showNote()
+    //func editNote(title: String, content: String)
 }
 
 protocol NotesDetailInputInteractable: AnyObject {
     var presenter: NotesDetailOutputInteractable! { get set }
-    func saveNotes(note: NoteModel)
+    
+    func createNote(title: String?, content: String?)
+    //func saveNotes(note: NoteModel)
 }
 
 protocol NotesDetailOutputInteractable: AnyObject {
-    func notesUpdated(notes: [NoteModel])
+    func noteUpdated(note: NoteModel)
 }
 
 protocol NotesDetailRoutable: AnyObject {
     var viewController: UIViewController! { get set }
+    
+    func popToMain()
 }
 
 protocol NotesDetailBuildable {
-    static func build() -> NotesDetailViewController
+    static func build(operationType: NotesDetailOperationType,
+                      moduleDelegate: NotesDetailModuleDelegate?) -> NotesDetailViewController
 }

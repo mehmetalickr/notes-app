@@ -9,4 +9,8 @@ import UIKit
 
 class NotesDetailRouter: NotesDetailRoutable {
     var viewController: UIViewController!
+    
+    func popToMain() {
+        viewController.navigationController?.popViewController(animated: false)
+    }
 }

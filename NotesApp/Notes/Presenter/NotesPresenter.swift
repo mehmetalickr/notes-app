@@ -11,9 +11,10 @@ class NotesPresenter: NotesPresentable {
     weak var view: NotesViewManageable!
     var interactor: NotesInputInteractable!
     var router: NotesRoutable!
-    private var notes = [NoteModel]()
+    
     func userDidTapAddNoteButton() {
-        router.showNotesDetail()
+        router.showNotesDetail(operationType: .add,
+                               moduleDelegate: self)
     }
     
     func loadNotes() {
@@ -27,7 +28,12 @@ class NotesPresenter: NotesPresentable {
 
 extension NotesPresenter: NotesOutputInteractable {
     func notesFetched(notes: [NoteModel]) {
-        self.notes = notes
         view.viewNotes(notes: notes)
+    }
+}
+
+extension NotesPresenter: NotesDetailModuleDelegate {
+    func notesUpdated(with note: NoteModel) {
+        interactor.fetchNotes()
     }
 }
