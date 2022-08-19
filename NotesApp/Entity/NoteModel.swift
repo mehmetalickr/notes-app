@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct NoteModel {
-    var id: Int
+struct NoteModel: Codable {
+    var id: String
     var title: String
     var content: String
 }

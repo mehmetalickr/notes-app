@@ -10,8 +10,15 @@ import UIKit
 class NotesRouter: NotesRoutable {
     weak var viewController: UIViewController!
     
-    func showNotesDetail() {
-        viewController.navigationController?.pushViewController(NotesDetailBuilder.build(), animated: false)
+    func showNotesDetail(operationType: NotesDetailOperationType,
+                         moduleDelegate: NotesDetailModuleDelegate?) {
+        viewController.navigationController?.pushViewController(
+            NotesDetailBuilder.build(
+                operationType: operationType,
+                moduleDelegate: moduleDelegate
+            ),
+            animated: false
+        )
     }
 
 }
