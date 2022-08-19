@@ -10,10 +10,6 @@ import Foundation
 class NotesDetailInteractor: NotesDetailInputInteractable {
     weak var presenter: NotesDetailOutputInteractable!
     
-    func saveNotes(note: NoteModel) {
-        
-    }
-    
     func createNote(title: String?, content: String?) {
         guard let title = title,
               let content = content else {

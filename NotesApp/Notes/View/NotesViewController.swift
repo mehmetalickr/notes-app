@@ -9,7 +9,7 @@ import SnapKit
 import UIKit
 
 
-class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NotesViewManageable {
+class NotesViewController: UIViewController, NotesViewManageable {
     var presenter: NotesPresentable!
     
     var tableView = UITableView()
@@ -79,8 +79,11 @@ class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDat
             make.bottom.equalToSuperview().inset(50)
         }
     }
+}
+
+// MARK: - UITable View Data Source
+extension NotesViewController: UITableViewDataSource {
     
-    // MARK: - Table View Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notes.count
     }
@@ -92,12 +95,26 @@ class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         return cell
     }
+}
+
+// MARK: - UITable View Delegate
+extension NotesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
+            self.presenter.removeNote(id: indexPath.row)
+            self.notes.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            completionHandler(true)
+        }
+        let swipeActionConfig = UISwipeActionsConfiguration(actions: [delete])
+        return swipeActionConfig
+    }
 }
-
 extension NotesViewController {
     
     @objc
@@ -114,5 +131,5 @@ extension NotesViewController {
     }
 }
 
-   
+
 
