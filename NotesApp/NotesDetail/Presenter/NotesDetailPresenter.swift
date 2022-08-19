@@ -27,7 +27,6 @@ class NotesDetailPresenter: NotesDetailPresentable {
         case .update:
             break
         }
-//        self.interactor.saveNotes(note: note)
     }
     
     func showNote() {

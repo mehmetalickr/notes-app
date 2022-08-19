@@ -30,7 +30,6 @@ protocol NotesDetailInputInteractable: AnyObject {
     var presenter: NotesDetailOutputInteractable! { get set }
     
     func createNote(title: String?, content: String?)
-    //func saveNotes(note: NoteModel)
 }
 
 protocol NotesDetailOutputInteractable: AnyObject {
