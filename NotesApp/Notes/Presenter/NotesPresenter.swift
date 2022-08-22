@@ -13,16 +13,20 @@ class NotesPresenter: NotesPresentable {
     var router: NotesRoutable!
     
     func userDidTapAddNoteButton() {
-        router.showNotesDetail(operationType: .add,
-                               moduleDelegate: self)
+        router.routeToAddNotesDetail(moduleDelegate: self)
     }
     
     func loadNotes() {
         interactor.fetchNotes()
     }
     
+    func showNoteDetails(selectedNote: NoteModel) {
+        router.routeToUpdateNotesDetail(moduleDelegate: self,
+                                        selectedNote: selectedNote)
+    }
+    
     func removeNote(id: Int) {
-        interactor.deleteNote(id: id)
+        interactor.deleteNoteFromStorage(id: id)
     }
 }
 

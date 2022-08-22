@@ -34,7 +34,7 @@ class NotesViewController: UIViewController, NotesViewManageable {
         setupAddNoteButton()
     }
     
-    // MARK: - Setup View
+    // MARK: - Setup Table View
     func setupTableView() {
         view.addSubview(tableView)
         setTableViewDelegates()
@@ -74,7 +74,7 @@ class NotesViewController: UIViewController, NotesViewManageable {
     // MARK: - Configure Table View Constraints
     func configureTableViewConstraints() {
         tableView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(30)
+            make.leading.trailing.equalToSuperview().inset(20)
             make.top.equalToSuperview().inset(200)
             make.bottom.equalToSuperview().inset(50)
         }
@@ -102,6 +102,7 @@ extension NotesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        presenter?.showNoteDetails(selectedNote: notes[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

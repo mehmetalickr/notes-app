@@ -9,10 +9,12 @@ import Foundation
 
 enum NotesDetailBuilder: NotesDetailBuildable {
     static func build(operationType: NotesDetailOperationType,
-                      moduleDelegate: NotesDetailModuleDelegate?) -> NotesDetailViewController {
+                      moduleDelegate: NotesDetailModuleDelegate?,
+                      selectedNote: NoteModel?) -> NotesDetailViewController {
         let view = NotesDetailViewController()
         let presenter = NotesDetailPresenter(operationType: operationType,
-                                             moduleDelegate: moduleDelegate)
+                                             moduleDelegate: moduleDelegate,
+                                             selectedNote: selectedNote)
         let interactor = NotesDetailInteractor()
         let router = NotesDetailRouter()
         

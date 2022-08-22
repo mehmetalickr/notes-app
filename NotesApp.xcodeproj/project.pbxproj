@@ -110,12 +110,12 @@
 		472CE80728A5387600CC41EB /* NotesApp */ = {
 			isa = PBXGroup;
 			children = (
-				4705519928AF94CB0008AADA /* Helpers */,
 				472CE80828A5387600CC41EB /* AppDelegate.swift */,
 				472CE80A28A5387600CC41EB /* SceneDelegate.swift */,
 				4772A78F28A93FD1007B81AD /* NotesDetail */,
 				4772A77628A5D7F3007B81AD /* Notes */,
 				4772A78328A850D0007B81AD /* Entity */,
+				4705519928AF94CB0008AADA /* Helpers */,
 				47E5484928AEE64400F40959 /* Constants */,
 				472CE81128A5387A00CC41EB /* Assets.xcassets */,
 				472CE81328A5387A00CC41EB /* LaunchScreen.storyboard */,
@@ -180,13 +180,13 @@
 		4772A78F28A93FD1007B81AD /* NotesDetail */ = {
 			isa = PBXGroup;
 			children = (
-				4705519628AF903D0008AADA /* Enum */,
 				47E5484628AE5AFD00F40959 /* Builder */,
 				4772A79028A93FD8007B81AD /* View */,
 				4772A79128A93FDE007B81AD /* Presenter */,
 				4772A79228A93FE4007B81AD /* Interactor */,
 				4772A79528A93FFE007B81AD /* Router */,
 				4772A79828A9402D007B81AD /* Protocol */,
+				4705519628AF903D0008AADA /* Enum */,
 			);
 			path = NotesDetail;
 			sourceTree = "<group>";

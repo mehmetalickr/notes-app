@@ -13,7 +13,6 @@ class NotesDetailInteractor: NotesDetailInputInteractable {
     func createNote(title: String?, content: String?) {
         guard let title = title,
               let content = content else {
-            /// Throw error as output
             return
         }
         let note = NoteModel(
@@ -23,6 +22,10 @@ class NotesDetailInteractor: NotesDetailInputInteractable {
         )
         addNoteToStorage(note)
         presenter.noteUpdated(note: note)
+    }
+    
+    func updateNote(title: String?, content: String?) {
+        print("Note Updated")
     }
     
     private func addNoteToStorage(_ note: NoteModel) {
