@@ -8,16 +8,20 @@
 import Foundation
 
 class NotesDetailPresenter: NotesDetailPresentable {
+    
     weak var view: NotesDetailViewManageable!
     var interactor: NotesDetailInputInteractable!
     var router: NotesDetailRoutable!
     private let operationType: NotesDetailOperationType
     private weak var moduleDelegate: NotesDetailModuleDelegate?
+    private let selectedNote: NoteModel?
     
     init(operationType: NotesDetailOperationType,
-         moduleDelegate: NotesDetailModuleDelegate? = nil) {
+         moduleDelegate: NotesDetailModuleDelegate? = nil,
+         selectedNote: NoteModel? = nil) {
         self.operationType = operationType
         self.moduleDelegate = moduleDelegate
+        self.selectedNote = selectedNote
     }
     
     func userDidTapSaveButton(title: String?, content: String?) {
@@ -25,18 +29,22 @@ class NotesDetailPresenter: NotesDetailPresentable {
         case .add:
             interactor.createNote(title: title, content: content)
         case .update:
+            interactor.updateNote(title: title, content: content)
             break
         }
     }
     
-    func showNote() {
-//        view?.viewNotes(title: note.title, content: note.content)
+    func getNoteDetails() {
+        let title = selectedNote?.title
+        let content = selectedNote?.content
+        view?.viewNote(title: title, content: content)
     }
     
     func editNote(title: String, content: String) {
-//        note.title = title
-//        note.content = content
-//        interactor?.saveNotes(note: note)
+//        guard var selectedNote = selectedNote else { return }
+//        selectedNote.title = title
+//        selectedNote.content = content
+//        interactor?.updateNote(title: title, content: content)
     }
 }
 

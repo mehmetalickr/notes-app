@@ -13,7 +13,7 @@ protocol NotesDetailModuleDelegate: AnyObject {
 
 protocol NotesDetailViewManageable: AnyObject {
     var presenter: NotesDetailPresentable! { get set }
-    func viewNotes(title: String, content: String)
+    func viewNote(title: String?, content: String?)
 }
 
 protocol NotesDetailPresentable: AnyObject {
@@ -22,14 +22,15 @@ protocol NotesDetailPresentable: AnyObject {
     var router: NotesDetailRoutable! { get set }
     
     func userDidTapSaveButton(title: String?, content: String?)
-    //func showNote()
-    //func editNote(title: String, content: String)
+    func getNoteDetails()
+    func editNote(title: String, content: String)
 }
 
 protocol NotesDetailInputInteractable: AnyObject {
     var presenter: NotesDetailOutputInteractable! { get set }
     
     func createNote(title: String?, content: String?)
+    func updateNote(title: String?, content: String?)
 }
 
 protocol NotesDetailOutputInteractable: AnyObject {
@@ -44,5 +45,6 @@ protocol NotesDetailRoutable: AnyObject {
 
 protocol NotesDetailBuildable {
     static func build(operationType: NotesDetailOperationType,
-                      moduleDelegate: NotesDetailModuleDelegate?) -> NotesDetailViewController
+                      moduleDelegate: NotesDetailModuleDelegate?,
+                      selectedNote: NoteModel?) -> NotesDetailViewController
 }

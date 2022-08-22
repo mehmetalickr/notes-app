@@ -14,7 +14,7 @@ class NotesInteractor: NotesInputInteractable {
         presenter.notesFetched(notes: UserDefaultsStorage.notes)
     }
     
-    func deleteNote(id: Int) {
+    func deleteNoteFromStorage(id: Int) {
         UserDefaultsStorage.notes.remove(at: id)
     }
 }

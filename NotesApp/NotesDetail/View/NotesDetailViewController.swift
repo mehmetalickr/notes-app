@@ -8,7 +8,7 @@
 import SnapKit
 import UIKit
 
-class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, NotesDetailViewManageable {
+class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     var presenter: NotesDetailPresentable!
     
     var titleTextField = UITextField()
@@ -19,7 +19,7 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
         super.viewDidLoad()
         view.backgroundColor = Style.viewBackgroundColor
         setupUI()
-        //presenter?.showNote()
+        presenter?.getNoteDetails()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -38,7 +38,7 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
         titleTextField.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         titleTextField.backgroundColor = Style.viewBackgroundColor
         titleTextField.borderStyle = UITextField.BorderStyle.roundedRect
-        titleTextField.layer.borderWidth = 1
+        titleTextField.layer.borderWidth = Style.titleTextFieldBorderWidth
         titleTextField.layer.borderColor = UIColor.systemYellow.cgColor
         titleTextField.layer.cornerRadius = Style.tableViewCornerRadius
         titleTextField.textAlignment = .center
@@ -95,11 +95,6 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
         }
     }
     
-    func viewNotes(title: String, content: String) {
-        titleTextField.text = title
-        contentTextView.text = content
-    }
-    
     // This function setting title text field's maximum character count.
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let textField = titleTextField.text,
@@ -122,3 +117,9 @@ extension NotesDetailViewController {
     }
 }
 
+extension NotesDetailViewController: NotesDetailViewManageable {
+    func viewNote(title: String?, content: String?) {
+        titleTextField.text = title
+        contentTextView.text = content
+    }
+}

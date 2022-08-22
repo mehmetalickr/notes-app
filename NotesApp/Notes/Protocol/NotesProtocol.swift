@@ -19,13 +19,14 @@ protocol NotesPresentable: AnyObject {
     
     func userDidTapAddNoteButton()
     func loadNotes()
+    func showNoteDetails(selectedNote: NoteModel)
     func removeNote(id: Int)
     }
 
 protocol NotesInputInteractable: AnyObject {
     var presenter: NotesOutputInteractable! { get set }
     func fetchNotes()
-    func deleteNote(id: Int)
+    func deleteNoteFromStorage(id: Int)
 }
 
 protocol NotesOutputInteractable: AnyObject {
@@ -34,12 +35,17 @@ protocol NotesOutputInteractable: AnyObject {
 
 protocol NotesRoutable: AnyObject {
     var viewController: UIViewController! { get set }
-    func showNotesDetail(operationType: NotesDetailOperationType,
-                         moduleDelegate: NotesDetailModuleDelegate?)
+    func routeToAddNotesDetail(moduleDelegate: NotesDetailModuleDelegate?)
+    func routeToUpdateNotesDetail(moduleDelegate: NotesDetailModuleDelegate?,
+                                  selectedNote: NoteModel)
 }
 
 protocol NotesBuildable {
     static func build() -> NotesViewController
+}
+
+protocol SelectedNoteRoutable: NotesDetailRoutable {
+    func showModule(view: UIViewController)
 }
 
 

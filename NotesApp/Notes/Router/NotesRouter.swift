@@ -10,15 +10,26 @@ import UIKit
 class NotesRouter: NotesRoutable {
     weak var viewController: UIViewController!
     
-    func showNotesDetail(operationType: NotesDetailOperationType,
-                         moduleDelegate: NotesDetailModuleDelegate?) {
+    func routeToAddNotesDetail(moduleDelegate: NotesDetailModuleDelegate?) {
         viewController.navigationController?.pushViewController(
             NotesDetailBuilder.build(
-                operationType: operationType,
-                moduleDelegate: moduleDelegate
+                operationType: .add,
+                moduleDelegate: moduleDelegate,
+                selectedNote: nil
             ),
             animated: false
         )
     }
-
+    
+    func routeToUpdateNotesDetail(moduleDelegate: NotesDetailModuleDelegate?,
+                                  selectedNote: NoteModel) {
+        viewController.navigationController?.pushViewController(
+            NotesDetailBuilder.build(
+                operationType: .update,
+                moduleDelegate: moduleDelegate,
+                selectedNote: selectedNote
+            ),
+            animated: false
+        )
+    }
 }
