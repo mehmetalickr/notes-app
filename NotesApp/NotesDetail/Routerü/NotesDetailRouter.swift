@@ -14,3 +14,8 @@ class NotesDetailRouter: NotesDetailRoutable {
         viewController.navigationController?.popViewController(animated: false)
     }
 }
+
+protocol NotesDetailRoutable: AnyObject {
+//    var viewController: UIViewController! { get set }
+    func popToMain()
+}

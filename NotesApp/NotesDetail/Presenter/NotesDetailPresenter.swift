@@ -41,17 +41,36 @@ class NotesDetailPresenter: NotesDetailPresentable {
     }
     
     func editNote(title: String, content: String) {
-//        guard var selectedNote = selectedNote else { return }
-//        selectedNote.title = title
-//        selectedNote.content = content
+//        let title = selectedNote?.title
+//        let content = selectedNote?.content
 //        interactor?.updateNote(title: title, content: content)
     }
 }
 
 extension NotesDetailPresenter: NotesDetailOutputInteractable {
+        
     func noteUpdated(note: NoteModel) {
         moduleDelegate?.notesUpdated(with: note)
         router.popToMain()
     }
+    
+    func selectedNoteUpdated(selectedNote: NoteModel) {
+        print("Selected note updated")
+    }
 }
+
+protocol NotesDetailPresentable: AnyObject {
+//    var view: NotesDetailViewManageable! { get set }
+//    var interactor: NotesDetailInputInteractable! { get set }
+//    var router: NotesDetailRoutable! { get set }
+    
+    func userDidTapSaveButton(title: String?, content: String?)
+    func getNoteDetails()
+    func editNote(title: String, content: String)
+}
+
+protocol NotesDetailOutputInteractable: AnyObject {
+    func noteUpdated(note: NoteModel)
+}
+
 

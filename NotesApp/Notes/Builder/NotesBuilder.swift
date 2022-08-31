@@ -10,7 +10,7 @@ import Foundation
 enum NotesBuilder: NotesBuildable {
     static func build() -> NotesViewController {
         let view = NotesViewController()
-        let presenter = NotesPresenter()
+        let presenter = NotesPresenter() //to do - constracture ile injection
         let interactor = NotesInteractor()
         let router = NotesRouter()
         
@@ -23,4 +23,8 @@ enum NotesBuilder: NotesBuildable {
         
         return view
     }
+}
+
+protocol NotesBuildable {
+    static func build() -> NotesViewController
 }

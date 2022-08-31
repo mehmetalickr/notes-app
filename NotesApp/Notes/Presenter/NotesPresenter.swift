@@ -41,3 +41,14 @@ extension NotesPresenter: NotesDetailModuleDelegate {
         interactor.fetchNotes()
     }
 }
+
+protocol NotesPresentable: AnyObject {
+//    var view: NotesViewManageable! { get set }
+    var interactor: NotesInputInteractable! { get set }
+    var router: NotesRoutable! { get set }
+    
+    func userDidTapAddNoteButton()
+    func loadNotes()
+    func showNoteDetails(selectedNote: NoteModel)
+    func removeNote(id: Int)
+}

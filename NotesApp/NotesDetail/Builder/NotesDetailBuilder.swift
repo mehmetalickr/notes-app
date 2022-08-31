@@ -28,3 +28,9 @@ enum NotesDetailBuilder: NotesDetailBuildable {
         return view
     }
 }
+
+protocol NotesDetailBuildable {
+    static func build(operationType: NotesDetailOperationType,
+                      moduleDelegate: NotesDetailModuleDelegate?,
+                      selectedNote: NoteModel?) -> NotesDetailViewController
+}

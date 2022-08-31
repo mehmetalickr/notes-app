@@ -13,7 +13,6 @@ class NotesViewController: UIViewController, NotesViewManageable {
     var presenter: NotesPresentable!
     
     var tableView = UITableView()
-    
     private var notes: [NoteModel] = []
     
     // MARK: - UIViewController Lifecycle
@@ -66,17 +65,27 @@ class NotesViewController: UIViewController, NotesViewManageable {
         button.addTarget(self, action: #selector(addNoteButtonTapped), for: .touchUpInside)
         
         button.snp.makeConstraints { make in
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(30)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(10)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(
+                Style.addNoteButtonTrailingInset
+            )
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(
+                Style.addNoteButtonTopInset
+            )
         }
     }
     
     // MARK: - Configure Table View Constraints
     func configureTableViewConstraints() {
         tableView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.top.equalToSuperview().inset(200)
-            make.bottom.equalToSuperview().inset(50)
+            make.leading.trailing.equalToSuperview().inset(
+                Style.tableViewLeadingTrailingInset
+            )
+            make.top.equalToSuperview().inset(
+                Style.tableViewTopInset
+            )
+            make.bottom.equalToSuperview().inset(
+                Style.tableViewBottomInset
+            )
         }
     }
 }
@@ -130,6 +139,11 @@ extension NotesViewController {
             self.tableView.reloadData()
         }
     }
+}
+
+protocol NotesViewManageable: AnyObject {
+    var presenter: NotesPresentable! { get set }
+    func viewNotes(notes: [NoteModel])
 }
 
 
