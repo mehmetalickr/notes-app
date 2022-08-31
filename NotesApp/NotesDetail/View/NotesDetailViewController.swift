@@ -22,10 +22,6 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
         presenter?.getNoteDetails()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        //presenter?.editNote(title: titleTextField.text ?? "", content: contentTextView.text)
-    }
-    
     // MARK: - Setup UI
     func setupUI() {
         setupTitleTextField()
@@ -35,12 +31,13 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
     
     // MARK: - Setup Title Text Field
     func setupTitleTextField() {
-        titleTextField.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        titleTextField.backgroundColor = Style.viewBackgroundColor
+        titleTextField.font = UIFont.systemFont(ofSize: Style.titleTextFieldFontSize,
+                                                weight: .bold)
+        titleTextField.backgroundColor = Style.titleTextFieldBackgroundColor
         titleTextField.borderStyle = UITextField.BorderStyle.roundedRect
         titleTextField.layer.borderWidth = Style.titleTextFieldBorderWidth
         titleTextField.layer.borderColor = UIColor.systemYellow.cgColor
-        titleTextField.layer.cornerRadius = Style.tableViewCornerRadius
+        titleTextField.layer.cornerRadius = Style.titleTextFieldCornerRadius
         titleTextField.textAlignment = .center
         titleTextField.keyboardType = UIKeyboardType.default
         titleTextField.returnKeyType = UIReturnKeyType.done
@@ -51,14 +48,15 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
         configureTitleTextFieldConstraints()
     }
     
-    // MARK: - Setup Content Text Field
+    // MARK: - Setup Content Text View
     func setupContentTextView() {
-        contentTextView.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        contentTextView.font = UIFont.systemFont(ofSize: Style.contentTextViewFontSize,
+                                                 weight: .bold)
         contentTextView.isScrollEnabled = false
         contentTextView.isEditable = true
         contentTextView.center = self.view.center
         contentTextView.textAlignment = .left
-        contentTextView.backgroundColor = Style.viewBackgroundColor
+        contentTextView.backgroundColor = Style.contentTextViewBackgroundColor
         contentTextView.sizeToFit()
         contentTextView.translatesAutoresizingMaskIntoConstraints = true
         contentTextView.delegate = self
@@ -79,8 +77,12 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
     // MARK: - Configure Title Text Field Constraints
     func configureTitleTextFieldConstraints() {
         titleTextField.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(
+                Style.titleTextFieldHeight
+            )
+            make.leading.trailing.equalToSuperview().inset(
+                Style.titleTextFieldLeadingTrailingInset
+            )
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
     }
@@ -90,7 +92,9 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
         contentTextView.snp.makeConstraints { make in
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
-            make.top.equalTo(titleTextField.snp.bottom).inset(-20)
+            make.top.equalTo(titleTextField.snp.bottom).inset(
+                Style.contentTextViewTopInset
+            )
             make.bottom.equalToSuperview()
         }
     }
@@ -122,4 +126,9 @@ extension NotesDetailViewController: NotesDetailViewManageable {
         titleTextField.text = title
         contentTextView.text = content
     }
+}
+
+protocol NotesDetailViewManageable: AnyObject {
+    var presenter: NotesDetailPresentable! { get set }
+    func viewNote(title: String?, content: String?)
 }

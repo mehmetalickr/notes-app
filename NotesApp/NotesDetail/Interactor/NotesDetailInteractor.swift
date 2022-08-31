@@ -25,10 +25,17 @@ class NotesDetailInteractor: NotesDetailInputInteractable {
     }
     
     func updateNote(title: String?, content: String?) {
-        print("Note Updated")
+//        presenter.selectedNoteUpdated(selectedNote: selectedNote)
     }
     
     private func addNoteToStorage(_ note: NoteModel) {
         UserDefaultsStorage.notes.append(note)
     }
+}
+
+protocol NotesDetailInputInteractable: AnyObject {
+    var presenter: NotesDetailOutputInteractable! { get set }
+    
+    func createNote(title: String?, content: String?)
+    func updateNote(title: String?, content: String?)
 }

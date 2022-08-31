@@ -18,3 +18,13 @@ class NotesInteractor: NotesInputInteractable {
         UserDefaultsStorage.notes.remove(at: id)
     }
 }
+
+protocol NotesInputInteractable: AnyObject {
+    var presenter: NotesOutputInteractable! { get set }
+    func fetchNotes()
+    func deleteNoteFromStorage(id: Int)
+}
+
+protocol NotesOutputInteractable: AnyObject {
+    func notesFetched(notes: [NoteModel])
+}
