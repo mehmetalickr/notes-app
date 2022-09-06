@@ -8,10 +8,10 @@
 import UIKit
 
 class NotesRouter: NotesRoutable {
-    weak var viewController: UIViewController!
+    weak var viewController: UIViewController?
     
     func routeToAddNotesDetail(moduleDelegate: NotesDetailModuleDelegate?) {
-        viewController.navigationController?.pushViewController(
+        viewController?.navigationController?.pushViewController(
             NotesDetailBuilder.build(
                 operationType: .add,
                 moduleDelegate: moduleDelegate,
@@ -22,8 +22,8 @@ class NotesRouter: NotesRoutable {
     }
     
     func routeToUpdateNotesDetail(moduleDelegate: NotesDetailModuleDelegate?,
-                                  selectedNote: NoteModel) {
-        viewController.navigationController?.pushViewController(
+                                  selectedNote: NoteModel?) {
+        viewController?.navigationController?.pushViewController(
             NotesDetailBuilder.build(
                 operationType: .update,
                 moduleDelegate: moduleDelegate,
@@ -35,8 +35,8 @@ class NotesRouter: NotesRoutable {
 }
 
 protocol NotesRoutable: AnyObject {
-    var viewController: UIViewController! { get set }
+    var viewController: UIViewController? { get set }
     func routeToAddNotesDetail(moduleDelegate: NotesDetailModuleDelegate?)
     func routeToUpdateNotesDetail(moduleDelegate: NotesDetailModuleDelegate?,
-                                  selectedNote: NoteModel)
+                                  selectedNote: NoteModel?)
 }

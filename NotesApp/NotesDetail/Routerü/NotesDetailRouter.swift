@@ -8,14 +8,14 @@
 import UIKit
 
 class NotesDetailRouter: NotesDetailRoutable {
-    var viewController: UIViewController!
+    var viewController: UIViewController?
     
     func popToMain() {
-        viewController.navigationController?.popViewController(animated: false)
+        viewController?.navigationController?.popViewController(animated: false)
     }
 }
 
 protocol NotesDetailRoutable: AnyObject {
-//    var viewController: UIViewController! { get set }
+//    var viewController: UIViewController? { get set }
     func popToMain()
 }

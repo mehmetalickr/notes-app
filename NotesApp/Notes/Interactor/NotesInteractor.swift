@@ -8,10 +8,10 @@
 import Foundation
 
 class NotesInteractor: NotesInputInteractable {
-    weak var presenter: NotesOutputInteractable!
+    weak var presenter: NotesOutputInteractable?
     
     func fetchNotes() {
-        presenter.notesFetched(notes: UserDefaultsStorage.notes)
+        presenter?.notesFetched(notes: UserDefaultsStorage.notes)
     }
     
     func deleteNoteFromStorage(id: Int) {
@@ -20,7 +20,7 @@ class NotesInteractor: NotesInputInteractable {
 }
 
 protocol NotesInputInteractable: AnyObject {
-    var presenter: NotesOutputInteractable! { get set }
+    var presenter: NotesOutputInteractable? { get set }
     func fetchNotes()
     func deleteNoteFromStorage(id: Int)
 }
