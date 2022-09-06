@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NotesInteractor: NotesInputInteractable {
+final class NotesInteractor: NotesInputInteractable {
     weak var presenter: NotesOutputInteractable?
     
     func fetchNotes() {

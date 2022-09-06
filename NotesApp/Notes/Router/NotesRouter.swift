@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NotesRouter: NotesRoutable {
+final class NotesRouter: NotesRoutable {
     weak var viewController: UIViewController?
     
     func routeToAddNotesDetail(moduleDelegate: NotesDetailModuleDelegate?) {

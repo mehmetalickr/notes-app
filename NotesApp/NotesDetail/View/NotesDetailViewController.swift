@@ -8,8 +8,12 @@
 import SnapKit
 import UIKit
 
-class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
-    var presenter: NotesDetailPresentable!
+// MARK: - NotesDetailViewController
+
+final class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
+    
+    // MARK: - Variables
+    var presenter: NotesDetailPresentable?
     
     var titleTextField = UITextField()
     var contentTextView = UITextView()
@@ -17,10 +21,13 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
     // MARK: - UIViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Style.viewBackgroundColor
-        setupUI()
+        presenter?.viewDidLoad()
+        presenter?.didSetupUI()
         presenter?.getNoteDetails()
     }
+}
+
+extension NotesDetailViewController {
     
     // MARK: - Setup UI
     func setupUI() {
@@ -42,10 +49,18 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
         titleTextField.keyboardType = UIKeyboardType.default
         titleTextField.returnKeyType = UIReturnKeyType.done
         titleTextField.clearButtonMode = UITextField.ViewMode.whileEditing
-        titleTextField.becomeFirstResponder()
         titleTextField.delegate = self
         self.view.addSubview(titleTextField)
-        configureTitleTextFieldConstraints()
+        
+        titleTextField.snp.makeConstraints { make in
+            make.height.equalTo(
+                Style.titleTextFieldHeight
+            )
+            make.leading.trailing.equalToSuperview().inset(
+                Style.titleTextFieldLeadingTrailingInset
+            )
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+        }
     }
     
     // MARK: - Setup Content Text View
@@ -61,7 +76,15 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
         contentTextView.translatesAutoresizingMaskIntoConstraints = true
         contentTextView.delegate = self
         self.view.addSubview(contentTextView)
-        configureContentTextViewConstraints()
+        
+        contentTextView.snp.makeConstraints { make in
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+            make.top.equalTo(titleTextField.snp.bottom).inset(
+                Style.contentTextViewTopInset
+            )
+            make.bottom.equalToSuperview()
+        }
     }
     
     // MARK: - Setup Save Button
@@ -74,61 +97,24 @@ class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextVi
         return navigationItem
     }
     
-    // MARK: - Configure Title Text Field Constraints
-    func configureTitleTextFieldConstraints() {
-        titleTextField.snp.makeConstraints { make in
-            make.height.equalTo(
-                Style.titleTextFieldHeight
-            )
-            make.leading.trailing.equalToSuperview().inset(
-                Style.titleTextFieldLeadingTrailingInset
-            )
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-        }
-    }
-    
-    // MARK: - Configure Content Text View Constraints
-    func configureContentTextViewConstraints() {
-        contentTextView.snp.makeConstraints { make in
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
-            make.top.equalTo(titleTextField.snp.bottom).inset(
-                Style.contentTextViewTopInset
-            )
-            make.bottom.equalToSuperview()
-        }
-    }
-    
-    // This function setting title text field's maximum character count.
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let textField = titleTextField.text,
-              let rangeOfTextToReplace = Range(range, in: textField) else {
-            return false
-        }
-        let substringToReplace = textField[rangeOfTextToReplace]
-        let count = textField.count - substringToReplace.count + string.count
-        return count <= TextLimit.maxCharacter
-    }
-}
-
-extension NotesDetailViewController {
-    
     @objc
     func saveButtonTapped() {
         print("Save Note Button Tapped")
-        presenter.userDidTapSaveButton(title: titleTextField.text,
+        presenter?.userDidTapSaveButton(title: titleTextField.text,
                                        content: contentTextView.text)
     }
-}
-
-extension NotesDetailViewController: NotesDetailViewManageable {
+    
     func viewNote(title: String?, content: String?) {
         titleTextField.text = title
         contentTextView.text = content
     }
 }
 
-protocol NotesDetailViewManageable: AnyObject {
-    var presenter: NotesDetailPresentable! { get set }
+protocol NotesDetailViewManageable: AnyObject, BaseViewManagable {
+    var presenter: NotesDetailPresentable? { get set }
     func viewNote(title: String?, content: String?)
+    func setupUI()
+    func setupTitleTextField()
+    func setupContentTextView()
+    func setupSaveButton()
 }
