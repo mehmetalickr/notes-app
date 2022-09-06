@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NotesDetailRouter: NotesDetailRoutable {
+final class NotesDetailRouter: NotesDetailRoutable {
     var viewController: UIViewController?
     
     func popToMain() {
@@ -16,6 +16,5 @@ class NotesDetailRouter: NotesDetailRoutable {
 }
 
 protocol NotesDetailRoutable: AnyObject {
-//    var viewController: UIViewController? { get set }
     func popToMain()
 }

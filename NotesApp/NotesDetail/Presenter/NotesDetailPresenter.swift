@@ -7,15 +7,20 @@
 
 import Foundation
 
-class NotesDetailPresenter: NotesDetailPresentable {
+// MARK: - NotesDetailPresenter
+
+final class NotesDetailPresenter: NotesDetailPresentable {
     
-    weak var view: NotesDetailViewManageable!
-    var interactor: NotesDetailInputInteractable!
-    var router: NotesDetailRoutable!
+    // MARK: - View & Interactor & Router
+    weak var view: NotesDetailViewManageable?
+    var interactor: NotesDetailInputInteractable?
+    var router: NotesDetailRoutable?
+    
     private let operationType: NotesDetailOperationType
     private weak var moduleDelegate: NotesDetailModuleDelegate?
     private let selectedNote: NoteModel?
     
+    // MARK: - Init
     init(operationType: NotesDetailOperationType,
          moduleDelegate: NotesDetailModuleDelegate? = nil,
          selectedNote: NoteModel? = nil) {
@@ -24,12 +29,37 @@ class NotesDetailPresenter: NotesDetailPresentable {
         self.selectedNote = selectedNote
     }
     
+    func viewDidLoad() {
+        view?.viewDidLoad()
+    }
+    
+    func didSetupUI() {
+        view?.setupUI()
+    }
+    
+    func didSetupTitleTextField() {
+        view?.setupTitleTextField()
+    }
+    
+    func didSetupContentTextView() {
+        view?.setupContentTextView()
+    }
+    
+    func didSetupSaveButton() {
+        view?.setupSaveButton()
+    }
+    
+    func didUserViewNotes(title: String?, content: String?) {
+        view?.viewNote(title: title, content: content)
+    }
+
+    
     func userDidTapSaveButton(title: String?, content: String?) {
         switch operationType {
         case .add:
-            interactor.createNote(title: title, content: content)
+            interactor?.createNote(title: title, content: content)
         case .update:
-            interactor.updateNote(title: title, content: content)
+            interactor?.updateNote(title: title, content: content)
             break
         }
     }
@@ -37,13 +67,13 @@ class NotesDetailPresenter: NotesDetailPresentable {
     func getNoteDetails() {
         let title = selectedNote?.title
         let content = selectedNote?.content
-        view?.viewNote(title: title, content: content)
+        didUserViewNotes(title: title, content: content)
     }
     
     func editNote(title: String, content: String) {
-//        let title = selectedNote?.title
-//        let content = selectedNote?.content
-//        interactor?.updateNote(title: title, content: content)
+        let title = selectedNote?.title
+        let content = selectedNote?.content
+        interactor?.updateNote(title: title, content: content)
     }
 }
 
@@ -51,26 +81,30 @@ extension NotesDetailPresenter: NotesDetailOutputInteractable {
         
     func noteUpdated(note: NoteModel) {
         moduleDelegate?.notesUpdated(with: note)
-        router.popToMain()
+        router?.popToMain()
     }
     
     func selectedNoteUpdated(selectedNote: NoteModel) {
-        print("Selected note updated")
+        moduleDelegate?.selectedNotesUpdated(with: selectedNote)
+        router?.popToMain()
     }
 }
 
 protocol NotesDetailPresentable: AnyObject {
-//    var view: NotesDetailViewManageable! { get set }
-//    var interactor: NotesDetailInputInteractable! { get set }
-//    var router: NotesDetailRoutable! { get set }
-    
+    func viewDidLoad()
+    func didSetupUI()
     func userDidTapSaveButton(title: String?, content: String?)
     func getNoteDetails()
     func editNote(title: String, content: String)
+    func didSetupTitleTextField()
+    func didSetupContentTextView()
+    func didSetupSaveButton()
+    func didUserViewNotes(title: String?, content: String?)
 }
 
 protocol NotesDetailOutputInteractable: AnyObject {
     func noteUpdated(note: NoteModel)
+    func selectedNoteUpdated(selectedNote: NoteModel)
 }
 
 
