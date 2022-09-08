@@ -7,17 +7,16 @@
 
 import Foundation
 
-enum NotesBuilder: NotesBuildable {
+final class NotesBuilder: NotesBuildable {
     static func build() -> NotesViewController {
         let view = NotesViewController()
-        let presenter = NotesPresenter()
-        let interactor = NotesInteractor()
         let router = NotesRouter()
+        let interactor = NotesInteractor()
+        let presenter = NotesPresenter(view: view,
+                                       interactor: interactor,
+                                       router: router)
         
         view.presenter = presenter
-        presenter.view = view
-        presenter.interactor = interactor
-        presenter.router = router
         interactor.presenter = presenter
         router.viewController = view
         

@@ -15,18 +15,17 @@ final class NotesViewController: UIViewController, NotesViewManageable {
     // MARK: - Variables
     var presenter: NotesPresentable?
     
-    var tableView = UITableView()
+    private let tableView = UITableView()
     
     // MARK: - UIViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
-        presenter?.didSetupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         presenter?.viewWillAppear()
-        presenter?.loadNotes()
     }
 }
 
@@ -34,7 +33,7 @@ final class NotesViewController: UIViewController, NotesViewManageable {
 extension NotesViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter?.notes.count ?? .zero
+        return presenter?.numberOfNote() ?? .zero
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -51,13 +50,10 @@ extension NotesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter?.didTableViewDeselectRow(at: indexPath)
-        presenter?.showNoteDetails(selectedNote: (presenter?.notes[indexPath.row])!)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
-            self.presenter?.removeNote(id: indexPath.row)
-            self.presenter?.notes.remove(at: indexPath.row)
             self.presenter?.didTableViewDeleteRows(at: indexPath)
             completionHandler(true)
         }
@@ -77,12 +73,18 @@ extension NotesViewController {
     // MARK: - Setup Table View
     func setupTableView() {
         view.addSubview(tableView)
-        setTableViewDelegates()
         tableView.rowHeight = Style.tableViewRowHeight
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noteCell")
         tableView.backgroundColor = Style.tableViewBackgroundColor
         self.tableView.layer.cornerRadius = Style.tableViewCornerRadius
-        
+        tableView.delegate = self
+        tableView.dataSource = self
+        setTableViewConstraints()
+
+    }
+    
+    // MARK: - Set Table View Constraints
+    func setTableViewConstraints() {
         tableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(
                 Style.tableViewLeadingTrailingInset
@@ -94,12 +96,6 @@ extension NotesViewController {
                 Style.tableViewBottomInset
             )
         }
-    }
-    
-    // MARK: - Table View Delegates
-    func setTableViewDelegates() {
-        tableView.delegate = self
-        tableView.dataSource = self
     }
     
     // MARK: - Setup Add Note Button
@@ -130,27 +126,24 @@ extension NotesViewController {
     }
     
     func reloadTableView() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        self.tableView.reloadData()
     }
-        
+    
     func tableViewDeselectRow(at indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
+
     func tableViewDeleteRows(at indexPath: IndexPath) {
         tableView.deleteRows(at: [indexPath], with: .automatic)
     }
 }
 
-protocol NotesViewManageable: AnyObject, BaseViewManagable {
-    var presenter: NotesPresentable? { get set }
+protocol NotesViewManageable: BaseViewManagable {
     func reloadTableView()
     func setupUI()
     func setupTableView()
-    func setTableViewDelegates()
     func setupAddNoteButton()
+    func setTableViewConstraints()
     func tableViewDeselectRow(at indexPath: IndexPath)
     func tableViewDeleteRows(at indexPath: IndexPath)
 }

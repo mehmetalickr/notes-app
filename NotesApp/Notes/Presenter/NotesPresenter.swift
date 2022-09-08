@@ -14,86 +14,93 @@ final class NotesPresenter: NotesPresentable {
     
     // MARK: - View & Interactor & Router
     weak var view: NotesViewManageable?
-    var interactor: NotesInputInteractable?
-    var router: NotesRoutable?
-    
+    var interactor: NotesInputInteractable
+    var router: NotesRoutable
+        
     var notes: [NoteModel] = []
+    
+    init(view: NotesViewManageable? = nil,
+         interactor: NotesInputInteractable,
+         router: NotesRoutable
+    ) {
+        self.view = view
+        self.interactor = interactor
+        self.router = router
+    }
     
     func viewDidLoad() {
         view?.setTitle("Notes")
         view?.setBackgroundColor(Style.viewBackgroundColor)
-    }
-    
-    func viewWillAppear() {
-        view?.viewWillAppear(false)
-    }
-    
-    func didSetupUI() {
         view?.setupUI()
     }
     
-    func didSetupTableView() {
-        view?.setupTableView()
+    func viewWillAppear() {
+        loadNotes()
     }
-    func didSetTableViewDelegates() {
-        view?.setTableViewDelegates()
+    
+    func numberOfNote() -> Int {
+        notes.count
     }
+    
+    func notesAtIndex(at indexPath: IndexPath) {
+        notes[indexPath.row]
+    }
+    
     func didSetupAddNoteButton() {
         view?.setupAddNoteButton()
     }
     
     func didTableViewDeselectRow(at indexPath: IndexPath) {
         view?.tableViewDeselectRow(at: indexPath)
+        showNoteDetails(selectedNote: (notes[indexPath.row]))
     }
     
     func didTableViewDeleteRows(at indexPath: IndexPath) {
+        removeNote(id: indexPath.row)
+        notes.remove(at: indexPath.row)
         view?.tableViewDeleteRows(at: indexPath)
     }
 
     func userDidTapAddNoteButton() {
-        router?.routeToAddNotesDetail(moduleDelegate: self)
+        router.routeToAddNotesDetail(moduleDelegate: self)
     }
     
     func loadNotes() {
-        interactor?.fetchNotes()
+        interactor.fetchNotes()
     }
     
     func showNoteDetails(selectedNote: NoteModel) {
-        router?.routeToUpdateNotesDetail(moduleDelegate: self,
+        router.routeToUpdateNotesDetail(moduleDelegate: self,
                                         selectedNote: selectedNote)
     }
     
     func removeNote(id: Int) {
-        interactor?.deleteNoteFromStorage(id: id)
+        interactor.deleteNoteFromStorage(id: id)
     }
 }
 
 extension NotesPresenter: NotesOutputInteractable {
     func notesFetched(notes: [NoteModel]) {
-        view?.reloadTableView()
         self.notes = notes
+        view?.reloadTableView()
     }
 }
 
 extension NotesPresenter: NotesDetailModuleDelegate {
     func notesUpdated(with note: NoteModel) {
-        interactor?.fetchNotes()
+        interactor.fetchNotes()
     }
     func selectedNotesUpdated(with selectedNote: NoteModel) {
-        interactor?.fetchNotes()
+        interactor.fetchNotes()
     }
 }
 
-protocol NotesPresentable: AnyObject {
-    var interactor: NotesInputInteractable? { get set }
-    var router: NotesRoutable? { get set }
+protocol NotesPresentable {
     var notes: [NoteModel] { get set }
     
     func viewDidLoad()
     func viewWillAppear()
-    func didSetupUI()
-    func didSetupTableView()
-    func didSetTableViewDelegates()
+    func numberOfNote() -> Int
     func didSetupAddNoteButton()
     func didTableViewDeselectRow(at indexPath: IndexPath)
     func didTableViewDeleteRows(at indexPath: IndexPath)

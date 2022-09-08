@@ -15,19 +15,18 @@ final class NotesDetailViewController: UIViewController, UITextFieldDelegate, UI
     // MARK: - Variables
     var presenter: NotesDetailPresentable?
     
-    var titleTextField = UITextField()
-    var contentTextView = UITextView()
+    private let titleTextField = UITextField()
+    private let contentTextView = UITextView()
     
     // MARK: - UIViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
-        presenter?.didSetupUI()
-        presenter?.getNoteDetails()
     }
 }
 
-extension NotesDetailViewController {
+// MARK: - NotesDetailViewManageable
+extension NotesDetailViewController: NotesDetailViewManageable {
     
     // MARK: - Setup UI
     func setupUI() {
@@ -46,7 +45,6 @@ extension NotesDetailViewController {
         titleTextField.layer.borderColor = UIColor.systemYellow.cgColor
         titleTextField.layer.cornerRadius = Style.titleTextFieldCornerRadius
         titleTextField.textAlignment = .center
-        titleTextField.keyboardType = UIKeyboardType.default
         titleTextField.returnKeyType = UIReturnKeyType.done
         titleTextField.clearButtonMode = UITextField.ViewMode.whileEditing
         titleTextField.delegate = self
@@ -88,20 +86,12 @@ extension NotesDetailViewController {
     }
     
     // MARK: - Setup Save Button
-    func setupSaveButton() -> UINavigationItem {
+    func setupSaveButton() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save",
                                                                  style: .done,
                                                                  target: self,
                                                                  action: #selector(saveButtonTapped))
         self.navigationController?.navigationBar.tintColor = UIColor.systemYellow
-        return navigationItem
-    }
-    
-    @objc
-    func saveButtonTapped() {
-        print("Save Note Button Tapped")
-        presenter?.userDidTapSaveButton(title: titleTextField.text,
-                                       content: contentTextView.text)
     }
     
     func viewNote(title: String?, content: String?) {
@@ -110,11 +100,19 @@ extension NotesDetailViewController {
     }
 }
 
-protocol NotesDetailViewManageable: AnyObject, BaseViewManagable {
-    var presenter: NotesDetailPresentable? { get set }
-    func viewNote(title: String?, content: String?)
+// MARK: - Private
+private extension NotesDetailViewController {
+    @objc
+    func saveButtonTapped() {
+        presenter?.userDidTapSaveButton(title: titleTextField.text,
+                                        content: contentTextView.text)
+    }
+}
+
+protocol NotesDetailViewManageable: BaseViewManagable {
     func setupUI()
     func setupTitleTextField()
     func setupContentTextView()
     func setupSaveButton()
+    func viewNote(title: String?, content: String?)
 }

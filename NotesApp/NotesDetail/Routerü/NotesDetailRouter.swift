@@ -15,6 +15,6 @@ final class NotesDetailRouter: NotesDetailRoutable {
     }
 }
 
-protocol NotesDetailRoutable: AnyObject {
+protocol NotesDetailRoutable {
     func popToMain()
 }
