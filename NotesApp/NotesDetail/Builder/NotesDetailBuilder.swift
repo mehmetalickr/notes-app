@@ -7,21 +7,21 @@
 
 import Foundation
 
-enum NotesDetailBuilder: NotesDetailBuildable {
+final class NotesDetailBuilder: NotesDetailBuildable {
     static func build(operationType: NotesDetailOperationType,
                       moduleDelegate: NotesDetailModuleDelegate?,
                       selectedNote: NoteModel?) -> NotesDetailViewController {
         let view = NotesDetailViewController()
-        let presenter = NotesDetailPresenter(operationType: operationType,
-                                             moduleDelegate: moduleDelegate,
-                                             selectedNote: selectedNote)
         let interactor = NotesDetailInteractor()
         let router = NotesDetailRouter()
-        
+        let presenter = NotesDetailPresenter(view: view,
+                                             interactor: interactor,
+                                             router: router,
+                                             operationType: operationType,
+                                             moduleDelegate: moduleDelegate,
+                                             selectedNote: selectedNote)
+
         view.presenter = presenter
-        presenter.view = view
-        presenter.interactor = interactor
-        presenter.router = router
         interactor.presenter = presenter
         router.viewController = view
         

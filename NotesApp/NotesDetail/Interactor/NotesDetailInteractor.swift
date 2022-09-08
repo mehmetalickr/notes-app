@@ -24,13 +24,14 @@ final class NotesDetailInteractor: NotesDetailInputInteractable {
         presenter?.noteUpdated(note: note)
     }
     
-    func updateNote(title: String?, content: String?) {
-        guard let title = title,
-              let content = content else {
+    func updateNote(id: String?, title: String?, content: String?) {
+        guard  let id = id,
+               let title = title,
+               let content = content else {
             return
         }
         let selectedNote = NoteModel(
-            id: UUID().uuidString,
+            id: id,
             title: title,
             content: content
         )
@@ -43,13 +44,11 @@ final class NotesDetailInteractor: NotesDetailInputInteractable {
     }
     
     private func addUpdatedNoteToStorage(_ selectedNote: NoteModel) {
-        UserDefaultsStorage.notes.append(selectedNote)
+        UserDefaultsStorage.updateNote(with: selectedNote)
     }
 }
 
 protocol NotesDetailInputInteractable: AnyObject {
-    var presenter: NotesDetailOutputInteractable? { get set }
-    
     func createNote(title: String?, content: String?)
-    func updateNote(title: String?, content: String?)
+    func updateNote(id: String?, title: String?, content: String?)
 }

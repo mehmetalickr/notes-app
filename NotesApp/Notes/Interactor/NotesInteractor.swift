@@ -20,7 +20,6 @@ final class NotesInteractor: NotesInputInteractable {
 }
 
 protocol NotesInputInteractable: AnyObject {
-    var presenter: NotesOutputInteractable? { get set }
     func fetchNotes()
     func deleteNoteFromStorage(id: Int)
 }
