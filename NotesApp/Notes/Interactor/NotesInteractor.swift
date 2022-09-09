@@ -19,7 +19,7 @@ final class NotesInteractor: NotesInputInteractable {
     }
 }
 
-protocol NotesInputInteractable: AnyObject {
+protocol NotesInputInteractable {
     func fetchNotes()
     func deleteNoteFromStorage(id: Int)
 }

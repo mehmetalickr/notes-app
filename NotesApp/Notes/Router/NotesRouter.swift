@@ -34,7 +34,7 @@ final class NotesRouter: NotesRoutable {
     }
 }
 
-protocol NotesRoutable: AnyObject {
+protocol NotesRoutable {
     var viewController: UIViewController? { get set }
     func routeToAddNotesDetail(moduleDelegate: NotesDetailModuleDelegate?)
     func routeToUpdateNotesDetail(moduleDelegate: NotesDetailModuleDelegate?,

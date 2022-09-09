@@ -17,8 +17,9 @@ final class NotesPresenter: NotesPresentable {
     var interactor: NotesInputInteractable
     var router: NotesRoutable
         
-    var notes: [NoteModel] = []
+    private var notes: [NoteModel] = []
     
+    // MARK: - Init
     init(view: NotesViewManageable? = nil,
          interactor: NotesInputInteractable,
          router: NotesRoutable
@@ -42,8 +43,8 @@ final class NotesPresenter: NotesPresentable {
         notes.count
     }
     
-    func notesAtIndex(at indexPath: IndexPath) {
-        notes[indexPath.row]
+    func notesAtIndex(at indexPath: IndexPath) -> String {
+        notes[indexPath.row].title
     }
     
     func didSetupAddNoteButton() {
@@ -82,7 +83,7 @@ final class NotesPresenter: NotesPresentable {
 extension NotesPresenter: NotesOutputInteractable {
     func notesFetched(notes: [NoteModel]) {
         self.notes = notes
-        view?.reloadTableView()
+        view?.reloadTableViewData()
     }
 }
 
@@ -96,11 +97,10 @@ extension NotesPresenter: NotesDetailModuleDelegate {
 }
 
 protocol NotesPresentable {
-    var notes: [NoteModel] { get set }
-    
     func viewDidLoad()
     func viewWillAppear()
     func numberOfNote() -> Int
+    func notesAtIndex(at indexPath: IndexPath) -> String
     func didSetupAddNoteButton()
     func didTableViewDeselectRow(at indexPath: IndexPath)
     func didTableViewDeleteRows(at indexPath: IndexPath)
