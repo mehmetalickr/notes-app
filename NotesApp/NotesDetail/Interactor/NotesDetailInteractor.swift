@@ -48,7 +48,7 @@ final class NotesDetailInteractor: NotesDetailInputInteractable {
     }
 }
 
-protocol NotesDetailInputInteractable: AnyObject {
+protocol NotesDetailInputInteractable {
     func createNote(title: String?, content: String?)
     func updateNote(id: String?, title: String?, content: String?)
 }

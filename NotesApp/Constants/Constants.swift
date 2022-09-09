@@ -34,7 +34,3 @@ enum Style {
     static let addNoteButtonTrailingInset: CGFloat = 30
     static let addNoteButtonTopInset: CGFloat = 10
 }
-// MARK: - Text Limit Constant
-enum TextLimit {
-    static let maxCharacter: Int = 20
-}

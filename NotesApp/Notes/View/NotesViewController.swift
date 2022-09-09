@@ -38,9 +38,7 @@ extension NotesViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "noteCell", for: indexPath)
-        cell.textLabel?.text = presenter?.notes[indexPath.row].title
-        cell.detailTextLabel?.text = presenter?.notes[indexPath.row].content
-        
+        cell.textLabel?.text = presenter?.notesAtIndex(at: indexPath)        
         return cell
     }
 }
@@ -125,7 +123,7 @@ extension NotesViewController {
         presenter?.userDidTapAddNoteButton()
     }
     
-    func reloadTableView() {
+    func reloadTableViewData() {
         self.tableView.reloadData()
     }
     
@@ -139,7 +137,7 @@ extension NotesViewController {
 }
 
 protocol NotesViewManageable: BaseViewManagable {
-    func reloadTableView()
+    func reloadTableViewData()
     func setupUI()
     func setupTableView()
     func setupAddNoteButton()
