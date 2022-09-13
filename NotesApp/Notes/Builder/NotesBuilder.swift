@@ -7,6 +7,12 @@
 
 import Foundation
 
+// MARK: - Protocol
+protocol NotesBuildable {
+    static func build() -> NotesViewController
+}
+
+// MARK: - NotesBuildable
 final class NotesBuilder: NotesBuildable {
     static func build() -> NotesViewController {
         let view = NotesViewController()
@@ -17,13 +23,9 @@ final class NotesBuilder: NotesBuildable {
                                        router: router)
         
         view.presenter = presenter
-        interactor.presenter = presenter
+        interactor.output = presenter
         router.viewController = view
         
         return view
     }
-}
-
-protocol NotesBuildable {
-    static func build() -> NotesViewController
 }

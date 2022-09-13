@@ -7,8 +7,21 @@
 
 import Foundation
 
-// MARK: - NotesDetailPresenter
+// MARK: - Protocols
+protocol NotesDetailPresentable {
+    func viewDidLoad()
+    func getNoteDetails()
+    func editNote(title: String, content: String)
+    func didUserViewNotes(title: String?, content: String?)
+    func userDidTapSaveButton(title: String?, content: String?)
+}
 
+protocol NotesDetailOutputInteractable: AnyObject {
+    func noteUpdated(note: NoteModel)
+    func selectedNoteUpdated(selectedNote: NoteModel)
+}
+
+// MARK: - NotesDetailPresenter
 final class NotesDetailPresenter: NotesDetailPresentable {
     
     // MARK: - View & Interactor & Router
@@ -36,21 +49,29 @@ final class NotesDetailPresenter: NotesDetailPresentable {
     }
     
     func viewDidLoad() {
-        view?.setupUI()
+        view?.setupViewHierarchy()
+        view?.setupConstraints()
+        view?.setupTitleTextField()
+        view?.setupContentTextView()
+        view?.setupSaveButton()
         getNoteDetails()
     }
     
     func didUserViewNotes(title: String?, content: String?) {
-        view?.viewNote(title: title, content: content)
+        view?.viewNoteTitle(title: title)
+        view?.viewNoteContent(content: content)
     }
-
+    
     func userDidTapSaveButton(title: String?, content: String?) {
+        guard let title = title,
+              let content = content else {
+            return
+        }
         switch operationType {
         case .add:
             interactor.createNote(title: title, content: content)
         case .update:
-            interactor.updateNote(id: selectedNote?.id, title: title, content: content)
-            break
+            updateNote(selectedNoteID: selectedNote?.id, title: title, content: content)
         }
     }
     
@@ -61,14 +82,26 @@ final class NotesDetailPresenter: NotesDetailPresentable {
     }
     
     func editNote(title: String, content: String) {
-        let title = selectedNote?.title
-        let content = selectedNote?.content
-        interactor.updateNote(id: selectedNote?.id, title: title, content: content)
+        guard let id = selectedNote?.id,
+              let title = selectedNote?.title,
+              let content = selectedNote?.content else {
+            return
+        }
+        interactor.updateNote(id: id, title: title, content: content)
+    }
+    
+    private func updateNote(selectedNoteID: String?, title: String, content: String) {
+        guard let id = selectedNoteID else {
+            return
+        }
+        interactor.updateNote(id: id, title: title, content: content)
     }
 }
 
+
+// MARK: - NotesDetailOutputInteractable
 extension NotesDetailPresenter: NotesDetailOutputInteractable {
-        
+    
     func noteUpdated(note: NoteModel) {
         moduleDelegate?.notesUpdated(with: note)
         router.popToMain()
@@ -79,18 +112,3 @@ extension NotesDetailPresenter: NotesDetailOutputInteractable {
         router.popToMain()
     }
 }
-
-protocol NotesDetailPresentable {
-    func viewDidLoad()
-    func getNoteDetails()
-    func editNote(title: String, content: String)
-    func didUserViewNotes(title: String?, content: String?)
-    func userDidTapSaveButton(title: String?, content: String?)
-}
-
-protocol NotesDetailOutputInteractable: AnyObject {
-    func noteUpdated(note: NoteModel)
-    func selectedNoteUpdated(selectedNote: NoteModel)
-}
-
-

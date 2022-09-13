@@ -8,24 +8,28 @@
 import SnapKit
 import UIKit
 
-// MARK: - NotesViewController
+// MARK: - BaseViewManagable
+protocol NotesViewManageable: BaseViewManagable {
+    func reloadTableViewData()
+    func setupTableView()
+    func setupAddNoteButton()
+    func tableViewSelectRow(at indexPath: IndexPath)
+    func tableViewDeleteRows(at indexPath: IndexPath)
+}
 
-final class NotesViewController: UIViewController, NotesViewManageable {
+// MARK: - NotesViewController
+final class NotesViewController: UIViewController {
     
     // MARK: - Variables
-    var presenter: NotesPresentable?
+    var presenter: NotesPresentable!
     
     private let tableView = UITableView()
+    private let addNoteButton = UIButton()
     
     // MARK: - UIViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter?.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        presenter?.viewWillAppear()
+        presenter.viewDidLoad()
     }
 }
 
@@ -33,13 +37,15 @@ final class NotesViewController: UIViewController, NotesViewManageable {
 extension NotesViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter?.numberOfNote() ?? .zero
+        return presenter.numberOfNote()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "noteCell", for: indexPath)
-        cell.textLabel?.text = presenter?.notesAtIndex(at: indexPath)        
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Style.tableViewCellReuseIdentifier, for: indexPath) as? NotesTableViewCell {
+            cell.textLabel?.text = presenter.notesAtIndex(at: indexPath)
+            return cell
+        }
+        fatalError("Could not dequeueReusableCell")
     }
 }
 
@@ -47,12 +53,12 @@ extension NotesViewController: UITableViewDataSource {
 extension NotesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter?.didTableViewDeselectRow(at: indexPath)
+        presenter.didTableViewSelectRow(at: indexPath)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
-            self.presenter?.didTableViewDeleteRows(at: indexPath)
+        let delete = UIContextualAction(style: .destructive, title: Style.tableViewDeleteActionTitle) { (action, sourceView, completionHandler) in
+            self.presenter.didTableViewDeleteRows(at: indexPath)
             completionHandler(true)
         }
         let swipeActionConfig = UISwipeActionsConfiguration(actions: [delete])
@@ -60,29 +66,15 @@ extension NotesViewController: UITableViewDelegate {
     }
 }
 
-extension NotesViewController {
+// MARK: - NotesViewManageable
+extension NotesViewController: NotesViewManageable {
     
-    // MARK: - Setup UI
-    func setupUI() {
-        setupTableView()
-        setupAddNoteButton()
-    }
-    
-    // MARK: - Setup Table View
-    func setupTableView() {
+    func setupViewHierarchy() {
         view.addSubview(tableView)
-        tableView.rowHeight = Style.tableViewRowHeight
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noteCell")
-        tableView.backgroundColor = Style.tableViewBackgroundColor
-        self.tableView.layer.cornerRadius = Style.tableViewCornerRadius
-        tableView.delegate = self
-        tableView.dataSource = self
-        setTableViewConstraints()
-
+        view.addSubview(addNoteButton)
     }
     
-    // MARK: - Set Table View Constraints
-    func setTableViewConstraints() {
+    func setupConstraints() {
         tableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(
                 Style.tableViewLeadingTrailingInset
@@ -94,21 +86,8 @@ extension NotesViewController {
                 Style.tableViewBottomInset
             )
         }
-    }
-    
-    // MARK: - Setup Add Note Button
-    func setupAddNoteButton() {
-        let button = UIButton()
-        self.view.addSubview(button)
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: Style.addNoteButtonSize,
-                                                      weight: .bold,
-                                                      scale: .large)
-        let image = UIImage(systemName: "note.text.badge.plus", withConfiguration: imageConfig)
-        button.tintColor = UIColor.systemYellow
-        button.setImage(image, for: .normal)
-        button.addTarget(self, action: #selector(addNoteButtonTapped), for: .touchUpInside)
         
-        button.snp.makeConstraints { make in
+        addNoteButton.snp.makeConstraints { make in
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(
                 Style.addNoteButtonTrailingInset
             )
@@ -118,31 +97,41 @@ extension NotesViewController {
         }
     }
     
+    // MARK: - Setup Table View
+    func setupTableView() {
+        tableView.rowHeight = Style.tableViewRowHeight
+        tableView.register(NotesTableViewCell.self, forCellReuseIdentifier: Style.tableViewCellReuseIdentifier)
+        tableView.backgroundColor = Style.tableViewBackgroundColor
+        self.tableView.layer.cornerRadius = Style.tableViewCornerRadius
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    // MARK: - Setup Add Note Button
+    func setupAddNoteButton() {
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: Style.addNoteButtonSize,
+                                                      weight: .bold,
+                                                      scale: .large)
+        let image = UIImage(systemName: Style.addNoteButtonImage, withConfiguration: imageConfig)
+        addNoteButton.tintColor = UIColor.systemYellow
+        addNoteButton.setImage(image, for: .normal)
+        addNoteButton.addTarget(self, action: #selector(addNoteButtonTapped), for: .touchUpInside)
+    }
+    
     @objc
     func addNoteButtonTapped() {
-        presenter?.userDidTapAddNoteButton()
+        presenter.addNoteButtonTapped()
     }
     
     func reloadTableViewData() {
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
-    func tableViewDeselectRow(at indexPath: IndexPath) {
+    func tableViewSelectRow(at indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
+    
     func tableViewDeleteRows(at indexPath: IndexPath) {
         tableView.deleteRows(at: [indexPath], with: .automatic)
     }
 }
-
-protocol NotesViewManageable: BaseViewManagable {
-    func reloadTableViewData()
-    func setupUI()
-    func setupTableView()
-    func setupAddNoteButton()
-    func setTableViewConstraints()
-    func tableViewDeselectRow(at indexPath: IndexPath)
-    func tableViewDeleteRows(at indexPath: IndexPath)
-}
-

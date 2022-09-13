@@ -8,15 +8,27 @@
 import Foundation
 import UIKit
 
-// MARK: - NotesPresenter
+// MARK: - Protocol
+protocol NotesPresentable {
+    func viewDidLoad()
+    func numberOfNote() -> Int
+    func notesAtIndex(at indexPath: IndexPath) -> String
+    func didSetupAddNoteButton()
+    func didTableViewSelectRow(at indexPath: IndexPath)
+    func didTableViewDeleteRows(at indexPath: IndexPath)
+    func addNoteButtonTapped()
+    func showNoteDetails(selectedNote: NoteModel)
+    func removeNote(id: Int)
+}
 
+// MARK: - NotesPresentable
 final class NotesPresenter: NotesPresentable {
     
     // MARK: - View & Interactor & Router
     weak var view: NotesViewManageable?
     var interactor: NotesInputInteractable
     var router: NotesRoutable
-        
+    
     private var notes: [NoteModel] = []
     
     // MARK: - Init
@@ -30,13 +42,14 @@ final class NotesPresenter: NotesPresentable {
     }
     
     func viewDidLoad() {
-        view?.setTitle("Notes")
+        view?.setupViewHierarchy()
+        view?.setupViewDelegate()
+        view?.setupConstraints()
+        view?.setTitle(Style.title)
         view?.setBackgroundColor(Style.viewBackgroundColor)
-        view?.setupUI()
-    }
-    
-    func viewWillAppear() {
-        loadNotes()
+        view?.setupTableView()
+        view?.setupAddNoteButton()
+        interactor.fetchNotes()
     }
     
     func numberOfNote() -> Int {
@@ -51,8 +64,8 @@ final class NotesPresenter: NotesPresentable {
         view?.setupAddNoteButton()
     }
     
-    func didTableViewDeselectRow(at indexPath: IndexPath) {
-        view?.tableViewDeselectRow(at: indexPath)
+    func didTableViewSelectRow(at indexPath: IndexPath) {
+        view?.tableViewSelectRow(at: indexPath)
         showNoteDetails(selectedNote: (notes[indexPath.row]))
     }
     
@@ -61,13 +74,9 @@ final class NotesPresenter: NotesPresentable {
         notes.remove(at: indexPath.row)
         view?.tableViewDeleteRows(at: indexPath)
     }
-
-    func userDidTapAddNoteButton() {
-        router.routeToAddNotesDetail(moduleDelegate: self)
-    }
     
-    func loadNotes() {
-        interactor.fetchNotes()
+    func addNoteButtonTapped() {
+        router.routeToAddNotesDetail(moduleDelegate: self)
     }
     
     func showNoteDetails(selectedNote: NoteModel) {
@@ -80,6 +89,7 @@ final class NotesPresenter: NotesPresentable {
     }
 }
 
+// MARK: - NotesOutputInteractable
 extension NotesPresenter: NotesOutputInteractable {
     func notesFetched(notes: [NoteModel]) {
         self.notes = notes
@@ -87,6 +97,7 @@ extension NotesPresenter: NotesOutputInteractable {
     }
 }
 
+// MARK: - NotesDetailModuleDelegate
 extension NotesPresenter: NotesDetailModuleDelegate {
     func notesUpdated(with note: NoteModel) {
         interactor.fetchNotes()
@@ -94,18 +105,4 @@ extension NotesPresenter: NotesDetailModuleDelegate {
     func selectedNotesUpdated(with selectedNote: NoteModel) {
         interactor.fetchNotes()
     }
-}
-
-protocol NotesPresentable {
-    func viewDidLoad()
-    func viewWillAppear()
-    func numberOfNote() -> Int
-    func notesAtIndex(at indexPath: IndexPath) -> String
-    func didSetupAddNoteButton()
-    func didTableViewDeselectRow(at indexPath: IndexPath)
-    func didTableViewDeleteRows(at indexPath: IndexPath)
-    func userDidTapAddNoteButton()
-    func loadNotes()
-    func showNoteDetails(selectedNote: NoteModel)
-    func removeNote(id: Int)
 }

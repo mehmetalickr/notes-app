@@ -8,12 +8,21 @@
 import SnapKit
 import UIKit
 
-// MARK: - NotesDetailViewController
+// MARK: - Protocol
+protocol NotesDetailViewManageable: BaseViewManagable {
+    func setupTitleTextField()
+    func setupContentTextView()
+    func setupConstraints()
+    func setupSaveButton()
+    func viewNoteTitle(title: String?)
+    func viewNoteContent(content: String?)
+}
 
+// MARK: - NotesDetailViewController
 final class NotesDetailViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
     // MARK: - Variables
-    var presenter: NotesDetailPresentable?
+    var presenter: NotesDetailPresentable!
     
     private let titleTextField = UITextField()
     private let contentTextView = UITextView()
@@ -21,19 +30,12 @@ final class NotesDetailViewController: UIViewController, UITextFieldDelegate, UI
     // MARK: - UIViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter?.viewDidLoad()
+        presenter.viewDidLoad()
     }
 }
 
 // MARK: - NotesDetailViewManageable
 extension NotesDetailViewController: NotesDetailViewManageable {
-    
-    // MARK: - Setup UI
-    func setupUI() {
-        setupTitleTextField()
-        setupContentTextView()
-        setupSaveButton()
-    }
     
     // MARK: - Setup Title Text Field
     func setupTitleTextField() {
@@ -47,56 +49,69 @@ extension NotesDetailViewController: NotesDetailViewManageable {
         titleTextField.textAlignment = .center
         titleTextField.returnKeyType = UIReturnKeyType.done
         titleTextField.clearButtonMode = UITextField.ViewMode.whileEditing
-        titleTextField.delegate = self
-        self.view.addSubview(titleTextField)
-        
-        titleTextField.snp.makeConstraints { make in
-            make.height.equalTo(
-                Style.titleTextFieldHeight
-            )
-            make.leading.trailing.equalToSuperview().inset(
-                Style.titleTextFieldLeadingTrailingInset
-            )
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-        }
     }
     
     // MARK: - Setup Content Text View
     func setupContentTextView() {
         contentTextView.font = UIFont.systemFont(ofSize: Style.contentTextViewFontSize,
                                                  weight: .bold)
+        contentTextView.backgroundColor = Style.contentTextViewBackgroundColor
         contentTextView.isScrollEnabled = false
         contentTextView.isEditable = true
         contentTextView.center = self.view.center
         contentTextView.textAlignment = .left
-        contentTextView.backgroundColor = Style.contentTextViewBackgroundColor
         contentTextView.sizeToFit()
-        contentTextView.translatesAutoresizingMaskIntoConstraints = true
+        contentTextView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    // MARK: - Setup Save Button
+    func setupSaveButton() {
+        navigationItem.rightBarButtonItem = .init(title: Style.buttonTitle,
+                                                  style: .done,
+                                                  target: self,
+                                                  action: #selector(saveButtonTapped))
+        navigationController?.navigationBar.tintColor = .systemYellow
+    }
+    
+    func viewNoteTitle(title: String?) {
+        titleTextField.text = title
+    }
+    
+    func viewNoteContent(content: String?) {
+        contentTextView.text = content
+    }
+}
+
+extension NotesDetailViewController {
+    func setupViewDelegate() {
+        titleTextField.delegate = self
         contentTextView.delegate = self
-        self.view.addSubview(contentTextView)
-        
+    }
+    
+    func setupViewHierarchy() {
+        view.addSubview(titleTextField)
+        view.addSubview(contentTextView)
+    }
+    
+    func setupConstraints() {
+        titleTextField.snp.makeConstraints { make in
+            make.height.equalTo(
+                Style.titleTextFieldHeight
+            )
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview().inset(
+                Style.contentTextFieldLeadingTrailingInset
+            )
+        }
         contentTextView.snp.makeConstraints { make in
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+            make.leading.trailing.equalToSuperview().inset(
+                Style.contentTextFieldLeadingTrailingInset
+            )
             make.top.equalTo(titleTextField.snp.bottom).inset(
                 Style.contentTextViewTopInset
             )
             make.bottom.equalToSuperview()
         }
-    }
-    
-    // MARK: - Setup Save Button
-    func setupSaveButton() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save",
-                                                                 style: .done,
-                                                                 target: self,
-                                                                 action: #selector(saveButtonTapped))
-        self.navigationController?.navigationBar.tintColor = UIColor.systemYellow
-    }
-    
-    func viewNote(title: String?, content: String?) {
-        titleTextField.text = title
-        contentTextView.text = content
     }
 }
 
@@ -104,15 +119,7 @@ extension NotesDetailViewController: NotesDetailViewManageable {
 private extension NotesDetailViewController {
     @objc
     func saveButtonTapped() {
-        presenter?.userDidTapSaveButton(title: titleTextField.text,
+        presenter.userDidTapSaveButton(title: titleTextField.text,
                                         content: contentTextView.text)
     }
-}
-
-protocol NotesDetailViewManageable: BaseViewManagable {
-    func setupUI()
-    func setupTitleTextField()
-    func setupContentTextView()
-    func setupSaveButton()
-    func viewNote(title: String?, content: String?)
 }

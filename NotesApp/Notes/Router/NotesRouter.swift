@@ -7,9 +7,20 @@
 
 import UIKit
 
-final class NotesRouter: NotesRoutable {
+// MARK: - Protocol
+protocol NotesRoutable {
+    func routeToAddNotesDetail(moduleDelegate: NotesDetailModuleDelegate?)
+    func routeToUpdateNotesDetail(moduleDelegate: NotesDetailModuleDelegate?,
+                                  selectedNote: NoteModel?)
+}
+
+// MARK: - NotesRouter
+final class NotesRouter {
     weak var viewController: UIViewController?
-    
+}
+
+// MARK: - NotesRoutable
+extension NotesRouter: NotesRoutable {
     func routeToAddNotesDetail(moduleDelegate: NotesDetailModuleDelegate?) {
         viewController?.navigationController?.pushViewController(
             NotesDetailBuilder.build(
@@ -34,9 +45,4 @@ final class NotesRouter: NotesRoutable {
     }
 }
 
-protocol NotesRoutable {
-    var viewController: UIViewController? { get set }
-    func routeToAddNotesDetail(moduleDelegate: NotesDetailModuleDelegate?)
-    func routeToUpdateNotesDetail(moduleDelegate: NotesDetailModuleDelegate?,
-                                  selectedNote: NoteModel?)
-}
+

@@ -7,21 +7,44 @@
 
 import Foundation
 
-struct UserDefaultsStorage {
+// MARK: - Protocol
+protocol UserDefaultsStorageInterface {
+    var notes: [NoteModel] { get }
+    func appendNote(note: NoteModel)
+    func removeNote(id: Int)
+    func noteById(id: String) -> NoteModel?
+    func updateNote(with updatedNote: NoteModel)
+}
+
+// MARK: - UserDefaultsStorageInterface
+final class UserDefaultsStorage: UserDefaultsStorageInterface {
+    static var shared: UserDefaultsStorage = UserDefaultsStorage()
     @UserDefaultsWrapper(key: "notes", defaultValue: [NoteModel]())
-    static var notes: [NoteModel]
+    private var storedNotes: [NoteModel]
     
-    static func noteById(id: String) -> NoteModel? {
-        notes.first { noteModel in
+    var notes: [NoteModel] {
+        storedNotes
+    }
+    
+    func noteById(id: String) -> NoteModel? {
+        storedNotes.first { noteModel in
             noteModel.id == id
         }
     }
     
-    static func updateNote(with updatedNote: NoteModel) {
-        guard let index = notes.firstIndex(where: { noteModel in
+    func updateNote(with updatedNote: NoteModel) {
+        guard let index = storedNotes.firstIndex(where: { noteModel in
             noteModel.id == updatedNote.id
         }) else { return }
-        notes.remove(at: index)
-        notes.insert(updatedNote, at: index)
+        storedNotes.remove(at: index)
+        storedNotes.insert(updatedNote, at: index)
+    }
+    
+    func appendNote(note: NoteModel) {
+        storedNotes.append(note)
+    }
+    
+    func removeNote(id: Int) {
+        storedNotes.remove(at: id)
     }
 }

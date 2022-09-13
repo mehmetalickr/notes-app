@@ -7,48 +7,52 @@
 
 import Foundation
 
-final class NotesDetailInteractor: NotesDetailInputInteractable {
-    weak var presenter: NotesDetailOutputInteractable?
+// MARK: - Protocol
+protocol NotesDetailInputInteractable {
+    func createNote(title: String, content: String)
+    func updateNote(id: String, title: String, content: String)
+}
+
+final class NotesDetailInteractor {
+    weak var output: NotesDetailOutputInteractable?
+    var storage: UserDefaultsStorageInterface
     
-    func createNote(title: String?, content: String?) {
-        guard let title = title,
-              let content = content else {
-            return
-        }
+    init(storage: UserDefaultsStorageInterface = UserDefaultsStorage.shared) {
+        self.storage = storage
+    }
+}
+
+// MARK: - NotesDetailInputInteractable
+extension NotesDetailInteractor: NotesDetailInputInteractable {
+    
+    func createNote(title: String, content: String) {
         let note = NoteModel(
             id: UUID().uuidString,
             title: title,
             content: content
         )
         addNoteToStorage(note)
-        presenter?.noteUpdated(note: note)
+        output?.noteUpdated(note: note)
     }
     
-    func updateNote(id: String?, title: String?, content: String?) {
-        guard  let id = id,
-               let title = title,
-               let content = content else {
-            return
-        }
+    func updateNote(id: String, title: String, content: String) {
         let selectedNote = NoteModel(
             id: id,
             title: title,
             content: content
         )
         addUpdatedNoteToStorage(selectedNote)
-        presenter?.selectedNoteUpdated(selectedNote: selectedNote)
-    }
-    
-    private func addNoteToStorage(_ note: NoteModel) {
-        UserDefaultsStorage.notes.append(note)
-    }
-    
-    private func addUpdatedNoteToStorage(_ selectedNote: NoteModel) {
-        UserDefaultsStorage.updateNote(with: selectedNote)
+        output?.selectedNoteUpdated(selectedNote: selectedNote)
     }
 }
 
-protocol NotesDetailInputInteractable {
-    func createNote(title: String?, content: String?)
-    func updateNote(id: String?, title: String?, content: String?)
+// MARK: - Private
+private extension NotesDetailInteractor {
+    func addNoteToStorage(_ note: NoteModel) {
+        storage.appendNote(note: note)
+    }
+    
+    func addUpdatedNoteToStorage(_ selectedNote: NoteModel) {
+        storage.updateNote(with: selectedNote)
+    }
 }

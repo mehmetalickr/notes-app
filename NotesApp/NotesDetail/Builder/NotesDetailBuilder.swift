@@ -7,6 +7,14 @@
 
 import Foundation
 
+// MARK: - Protocol
+protocol NotesDetailBuildable {
+    static func build(operationType: NotesDetailOperationType,
+                      moduleDelegate: NotesDetailModuleDelegate?,
+                      selectedNote: NoteModel?) -> NotesDetailViewController
+}
+
+// MARK: - NotesDetailBuildable
 final class NotesDetailBuilder: NotesDetailBuildable {
     static func build(operationType: NotesDetailOperationType,
                       moduleDelegate: NotesDetailModuleDelegate?,
@@ -20,17 +28,11 @@ final class NotesDetailBuilder: NotesDetailBuildable {
                                              operationType: operationType,
                                              moduleDelegate: moduleDelegate,
                                              selectedNote: selectedNote)
-
+        
         view.presenter = presenter
-        interactor.presenter = presenter
+        interactor.output = presenter
         router.viewController = view
         
         return view
     }
-}
-
-protocol NotesDetailBuildable {
-    static func build(operationType: NotesDetailOperationType,
-                      moduleDelegate: NotesDetailModuleDelegate?,
-                      selectedNote: NoteModel?) -> NotesDetailViewController
 }
