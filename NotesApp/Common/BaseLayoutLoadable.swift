@@ -17,11 +17,14 @@ protocol BaseLayoutLoadable {
 // MARK: - BaseLayoutLoadable
 extension BaseLayoutLoadable {
     func setupViewHierarchy() {
+        // With this func we will setup the view hiearchy on view controller.
     }
     
     func setupConstraints() {
+        // With this func we will setup the views constraints on view controller.
     }
     
     func setupViewDelegate() {
+        // With this func we will setup the views delegates on view contoller.
     }
 }

@@ -74,6 +74,10 @@ extension NotesViewController: NotesViewManageable {
         view.addSubview(addNoteButton)
     }
     
+    func setupViewDelegate() {
+        tableView.delegate = self
+    }
+    
     func setupConstraints() {
         tableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(
@@ -103,7 +107,6 @@ extension NotesViewController: NotesViewManageable {
         tableView.register(NotesTableViewCell.self, forCellReuseIdentifier: Style.tableViewCellReuseIdentifier)
         tableView.backgroundColor = Style.tableViewBackgroundColor
         self.tableView.layer.cornerRadius = Style.tableViewCornerRadius
-        tableView.delegate = self
         tableView.dataSource = self
     }
     
