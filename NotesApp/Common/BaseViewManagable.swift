@@ -7,11 +7,13 @@
 
 import UIKit
 
-protocol BaseViewManagable where Self: UIViewController {
+// MARK: - Protocol
+protocol BaseViewManagable: BaseLayoutLoadable where Self: UIViewController {
     func setTitle(_ title: String?)
     func setBackgroundColor(_ color: UIColor)
 }
 
+// MARK: - BaseViewManagable
 extension BaseViewManagable {
     func setTitle(_ title: String?) {
         self.title = title

@@ -7,14 +7,16 @@
 
 import UIKit
 
+// MARK: - Protocol
+protocol NotesDetailRoutable {
+    func popToMain()
+}
+
+// MARK: - NotesDetailRoutable
 final class NotesDetailRouter: NotesDetailRoutable {
     var viewController: UIViewController?
     
     func popToMain() {
         viewController?.navigationController?.popViewController(animated: false)
     }
-}
-
-protocol NotesDetailRoutable {
-    func popToMain()
 }
