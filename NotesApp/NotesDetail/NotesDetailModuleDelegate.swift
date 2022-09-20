@@ -9,5 +9,4 @@ import Foundation
 
 protocol NotesDetailModuleDelegate: AnyObject {
     func notesUpdated(with note: NoteModel)
-    func selectedNotesUpdated(with selectedNote: NoteModel)
 }
