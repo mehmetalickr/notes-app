@@ -36,8 +36,7 @@ final class UserDefaultsStorage: UserDefaultsStorageInterface {
         guard let index = storedNotes.firstIndex(where: { noteModel in
             noteModel.id == updatedNote.id
         }) else { return }
-        storedNotes.remove(at: index)
-        storedNotes.insert(updatedNote, at: index)
+        storedNotes[index] = updatedNote
     }
     
     func appendNote(note: NoteModel) {

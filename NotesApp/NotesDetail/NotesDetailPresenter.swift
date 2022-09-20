@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // MARK: - Protocols
 protocol NotesDetailPresentable {
@@ -13,12 +14,14 @@ protocol NotesDetailPresentable {
     func getNoteDetails()
     func editNote(title: String, content: String)
     func didUserViewNotes(title: String?, content: String?)
-    func userDidTapSaveButton(title: String?, content: String?)
+    func didSetTitleTextFieldsCharacterLimit(textField: UITextField,
+                                             shouldChangeCharactersIn range: NSRange,
+                                             replacementString string: String) -> Bool
+    func userDidSaveNote(title: String?, content: String?)
 }
 
 protocol NotesDetailOutputInteractable: AnyObject {
-    func noteUpdated(note: NoteModel)
-    func selectedNoteUpdated(selectedNote: NoteModel)
+    func didNoteUpdated(note: NoteModel)
 }
 
 // MARK: - NotesDetailPresenter
@@ -26,17 +29,17 @@ final class NotesDetailPresenter: NotesDetailPresentable {
     
     // MARK: - View & Interactor & Router
     private weak var view: NotesDetailViewManageable?
-    private var interactor: NotesDetailInputInteractable
-    private var router: NotesDetailRoutable
+    private let interactor: NotesDetailInputInteractable
+    private let router: NotesDetailRouter
     
     private let operationType: NotesDetailOperationType
     private weak var moduleDelegate: NotesDetailModuleDelegate?
-    private let selectedNote: NoteModel?
+    private var selectedNote: NoteModel?
     
     // MARK: - Init
     init(view: NotesDetailViewManageable? = nil,
          interactor: NotesDetailInputInteractable,
-         router: NotesDetailRoutable,
+         router: NotesDetailRouter,
          operationType: NotesDetailOperationType,
          moduleDelegate: NotesDetailModuleDelegate? = nil,
          selectedNote: NoteModel? = nil) {
@@ -53,7 +56,6 @@ final class NotesDetailPresenter: NotesDetailPresentable {
         view?.setupConstraints()
         view?.setupTitleTextField()
         view?.setupContentTextView()
-        view?.setupSaveButton()
         getNoteDetails()
     }
     
@@ -62,16 +64,17 @@ final class NotesDetailPresenter: NotesDetailPresentable {
         view?.viewNoteContent(content: content)
     }
     
-    func userDidTapSaveButton(title: String?, content: String?) {
-        guard let title = title,
-              let content = content else {
-            return
-        }
+    func userDidSaveNote(title: String?, content: String?) {
         switch operationType {
         case .add:
-            interactor.createNote(title: title, content: content)
+            if let selectedNote = selectedNote {
+                updateNote(selectedNoteID: selectedNote.id, title: title, content: content)
+            } else {
+                interactor.createNote(title: title, content: content)
+            }
         case .update:
-            updateNote(selectedNoteID: selectedNote?.id, title: title, content: content)
+            guard let id = selectedNote?.id else { return }
+            updateNote(selectedNoteID: id, title: title, content: content)
         }
     }
     
@@ -90,25 +93,28 @@ final class NotesDetailPresenter: NotesDetailPresentable {
         interactor.updateNote(id: id, title: title, content: content)
     }
     
-    private func updateNote(selectedNoteID: String?, title: String, content: String) {
-        guard let id = selectedNoteID else {
-            return
+    func didSetTitleTextFieldsCharacterLimit(textField: UITextField,
+                                             shouldChangeCharactersIn range: NSRange,
+                                             replacementString string: String) -> Bool {
+        guard let textField = textField.text,
+              let rangeOfTextToReplace = Range(range, in: textField) else {
+            return false
         }
-        interactor.updateNote(id: id, title: title, content: content)
+        let substringToReplace = textField[rangeOfTextToReplace]
+        let count = textField.count - substringToReplace.count + string.count
+        return count <= 20
+    }
+    
+    private func updateNote(selectedNoteID: String, title: String?, content: String?) {
+        interactor.updateNote(id: selectedNoteID, title: title, content: content)
     }
 }
-
 
 // MARK: - NotesDetailOutputInteractable
 extension NotesDetailPresenter: NotesDetailOutputInteractable {
     
-    func noteUpdated(note: NoteModel) {
+    func didNoteUpdated(note: NoteModel) {
         moduleDelegate?.notesUpdated(with: note)
-        router.popToMain()
-    }
-    
-    func selectedNoteUpdated(selectedNote: NoteModel) {
-        moduleDelegate?.selectedNotesUpdated(with: selectedNote)
-        router.popToMain()
+        self.selectedNote = note
     }
 }

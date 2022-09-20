@@ -12,11 +12,12 @@ import UIKit
 protocol NotesPresentable {
     func viewDidLoad()
     func numberOfNote() -> Int
-    func notesAtIndex(at indexPath: IndexPath) -> String
+    func note(at index: Int) -> NoteModel?
     func didSetupAddNoteButton()
     func didTableViewSelectRow(at indexPath: IndexPath)
     func didTableViewDeleteRows(at indexPath: IndexPath)
     func addNoteButtonTapped()
+    func editButtonTapped(tableView: UITableView, navigationItem: UINavigationItem)
     func showNoteDetails(selectedNote: NoteModel)
     func removeNote(id: Int)
 }
@@ -26,8 +27,8 @@ final class NotesPresenter: NotesPresentable {
     
     // MARK: - View & Interactor & Router
     weak var view: NotesViewManageable?
-    var interactor: NotesInputInteractable
-    var router: NotesRoutable
+    private let interactor: NotesInputInteractable
+    private let router: NotesRoutable
     
     private var notes: [NoteModel] = []
     
@@ -49,6 +50,7 @@ final class NotesPresenter: NotesPresentable {
         view?.setBackgroundColor(Style.viewBackgroundColor)
         view?.setupTableView()
         view?.setupAddNoteButton()
+        view?.setupEditButton()
         interactor.fetchNotes()
     }
     
@@ -56,8 +58,8 @@ final class NotesPresenter: NotesPresentable {
         notes.count
     }
     
-    func notesAtIndex(at indexPath: IndexPath) -> String {
-        notes[indexPath.row].title
+    func note(at index: Int) -> NoteModel? {
+        notes[index]
     }
     
     func didSetupAddNoteButton() {
@@ -77,6 +79,19 @@ final class NotesPresenter: NotesPresentable {
     
     func addNoteButtonTapped() {
         router.routeToAddNotesDetail(moduleDelegate: self)
+    }
+    
+    func editButtonTapped(tableView: UITableView, navigationItem: UINavigationItem) {
+        if(tableView.isEditing == true)
+        {
+            navigationItem.rightBarButtonItem?.title = NotesStyle.editButtonTitle
+            tableView.isEditing = false
+        }
+        else
+        {
+            tableView.isEditing = true
+            navigationItem.rightBarButtonItem?.title = NotesStyle.doneButtonTitle
+        }
     }
     
     func showNoteDetails(selectedNote: NoteModel) {
@@ -100,9 +115,6 @@ extension NotesPresenter: NotesOutputInteractable {
 // MARK: - NotesDetailModuleDelegate
 extension NotesPresenter: NotesDetailModuleDelegate {
     func notesUpdated(with note: NoteModel) {
-        interactor.fetchNotes()
-    }
-    func selectedNotesUpdated(with selectedNote: NoteModel) {
         interactor.fetchNotes()
     }
 }

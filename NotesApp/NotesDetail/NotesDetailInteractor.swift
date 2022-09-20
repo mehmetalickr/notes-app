@@ -9,14 +9,16 @@ import Foundation
 
 // MARK: - Protocol
 protocol NotesDetailInputInteractable {
-    func createNote(title: String, content: String)
-    func updateNote(id: String, title: String, content: String)
+    func createNote(title: String?, content: String?)
+    func updateNote(id: String, title: String?, content: String?)
 }
 
 final class NotesDetailInteractor {
     weak var output: NotesDetailOutputInteractable?
-    var storage: UserDefaultsStorageInterface
     
+    private let storage: UserDefaultsStorageInterface
+    
+    // MARK: - Init
     init(storage: UserDefaultsStorageInterface = UserDefaultsStorage.shared) {
         self.storage = storage
     }
@@ -25,24 +27,24 @@ final class NotesDetailInteractor {
 // MARK: - NotesDetailInputInteractable
 extension NotesDetailInteractor: NotesDetailInputInteractable {
     
-    func createNote(title: String, content: String) {
+    func createNote(title: String?, content: String?) {
         let note = NoteModel(
             id: UUID().uuidString,
             title: title,
             content: content
         )
         addNoteToStorage(note)
-        output?.noteUpdated(note: note)
+        output?.didNoteUpdated(note: note)
     }
     
-    func updateNote(id: String, title: String, content: String) {
+    func updateNote(id: String, title: String?, content: String?) {
         let selectedNote = NoteModel(
             id: id,
             title: title,
             content: content
         )
         addUpdatedNoteToStorage(selectedNote)
-        output?.selectedNoteUpdated(selectedNote: selectedNote)
+        output?.didNoteUpdated(note: selectedNote)
     }
 }
 

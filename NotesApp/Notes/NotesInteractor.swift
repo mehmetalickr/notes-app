@@ -20,7 +20,7 @@ protocol NotesOutputInteractable: AnyObject {
 // MARK: - NotesInputInteractable
 final class NotesInteractor: NotesInputInteractable {
     weak var output: NotesOutputInteractable?
-    var storage: UserDefaultsStorageInterface
+    private let storage: UserDefaultsStorageInterface
     
     init(storage: UserDefaultsStorageInterface = UserDefaultsStorage.shared) {
         self.storage = storage
