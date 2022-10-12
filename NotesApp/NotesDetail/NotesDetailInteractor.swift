@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Protocol
 protocol NotesDetailInputInteractable {
-    func createNote(title: String?, content: String?)
+    func createNote(note: NoteModel)
     func updateNote(id: String, title: String?, content: String?)
 }
 
@@ -27,12 +27,7 @@ final class NotesDetailInteractor {
 // MARK: - NotesDetailInputInteractable
 extension NotesDetailInteractor: NotesDetailInputInteractable {
     
-    func createNote(title: String?, content: String?) {
-        let note = NoteModel(
-            id: UUID().uuidString,
-            title: title,
-            content: content
-        )
+    func createNote(note: NoteModel) {
         addNoteToStorage(note)
         output?.didNoteUpdated(note: note)
     }

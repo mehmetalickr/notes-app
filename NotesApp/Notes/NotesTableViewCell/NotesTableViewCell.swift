@@ -30,6 +30,13 @@ final class NotesTableViewCell: UITableViewCell {
 extension NotesTableViewCell: NotesTableViewCellViewable {
     
     func setTitle(with note: NoteModel) {
-        textLabel?.text = note.title
+        textLabel?.text = generateTitlePlaceholder(with: note)
+    }
+    
+    private func generateTitlePlaceholder(with note: NoteModel?) -> String? {
+        if note?.title == nil || note?.title == "" {
+            return "Başlıksız"
+        }
+        return note?.title
     }
 }
