@@ -30,7 +30,7 @@ final class NotesPresenter: NotesPresentable {
     private let interactor: NotesInputInteractable
     private let router: NotesRoutable
     
-    private var notes: [NoteModel] = []
+    private var notes: [NoteModel]?
     
     // MARK: - Init
     init(view: NotesViewManageable? = nil,
@@ -55,11 +55,11 @@ final class NotesPresenter: NotesPresentable {
     }
     
     func numberOfNote() -> Int {
-        notes.count
+        notes?.count ?? .zero
     }
     
     func note(at index: Int) -> NoteModel? {
-        notes[index]
+        notes?[index]
     }
     
     func didSetupAddNoteButton() {
@@ -68,12 +68,13 @@ final class NotesPresenter: NotesPresentable {
     
     func didTableViewSelectRow(at indexPath: IndexPath) {
         view?.tableViewSelectRow(at: indexPath)
-        showNoteDetails(selectedNote: (notes[indexPath.row]))
+        guard let selectedNote = notes?[indexPath.row] else { return }
+        showNoteDetails(selectedNote: selectedNote)
     }
     
     func didTableViewDeleteRows(at indexPath: IndexPath) {
         removeNote(id: indexPath.row)
-        notes.remove(at: indexPath.row)
+        notes?.remove(at: indexPath.row)
         view?.tableViewDeleteRows(at: indexPath)
     }
     
