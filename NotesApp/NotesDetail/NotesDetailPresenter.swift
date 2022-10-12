@@ -70,7 +70,12 @@ final class NotesDetailPresenter: NotesDetailPresentable {
             if let selectedNote = selectedNote {
                 updateNote(selectedNoteID: selectedNote.id, title: title, content: content)
             } else {
-                interactor.createNote(title: title, content: content)
+                let note = NoteModel(
+                    id: UUID().uuidString,
+                    title: title,
+                    content: content
+                )
+                interactor.createNote(note: note)
             }
         case .update:
             guard let id = selectedNote?.id else { return }
