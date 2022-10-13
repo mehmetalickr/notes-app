@@ -13,7 +13,7 @@ enum NotesDetailStyle {
     static let titleTextFieldFontSize: CGFloat = 25
     static let titleTextFieldHeight: CGFloat = 50
     static let titlePlaceholder = "Başlıksız"
-    static var textFieldMaxCharacters = 50
+    static var titleTextFieldMaxCharacters = 20
     // MARK: - Content Text View Constants
     static let contentTextViewFontSize: CGFloat = 18
     // MARK: - Button Constants

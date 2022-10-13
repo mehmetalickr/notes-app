@@ -18,12 +18,13 @@ enum NotesStyle {
     static let tableViewBackgroundColor = UIColor.black
     static let tableViewRowHeight: CGFloat = 80
     static let tableViewCornerRadius: CGFloat = 10.0
-    static let tableViewLeadingTrailingInset: CGFloat = 20
+    static let tableViewLeadingInset: CGFloat = 20
+    static let tableViewTrailingInset: CGFloat = -20
     static let tableViewTopInset: CGFloat = 200
     static let tableViewBottomInset: CGFloat = 50
     // MARK: - Add Note Button Constants
     static let addNoteButtonImage = "note.text.badge.plus"
     static let addNoteButtonSize: CGFloat = 20
-    static let addNoteButtonTrailingInset: CGFloat = 30
+    static let addNoteButtonTrailingInset: CGFloat = -30
     static let addNoteButtonTopInset: CGFloat = 10
 }
