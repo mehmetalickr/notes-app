@@ -61,8 +61,8 @@ final class NotesDetailPresenter: NotesDetailPresentable {
     }
     
     func didUserViewNotes(title: String?, content: String?) {
-        view?.viewNoteTitle(title: title)
-        view?.viewNoteContent(content: content)
+        view?.setTitleTextFieldText(with: title)
+        view?.setContentTextViewText(with: content)
     }
     
     func userDidSaveNote(title: String?, content: String?) {
