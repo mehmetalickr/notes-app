@@ -108,7 +108,7 @@ final class NotesDetailPresenter: NotesDetailPresentable {
         }
         let substringToReplace = textField[rangeOfTextToReplace]
         let count = textField.count - substringToReplace.count + string.count
-        return count <= 20
+        return count <= NotesDetailStyle.titleTextFieldMaxCharacters
     }
     
     private func updateNote(selectedNoteID: String, title: String?, content: String?) {
