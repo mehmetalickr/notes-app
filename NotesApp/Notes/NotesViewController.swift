@@ -81,6 +81,7 @@ extension NotesViewController: NotesViewManageable {
         tableView.register(NotesTableViewCell.self, forCellReuseIdentifier: NotesStyle.tableViewCellReuseIdentifier)
         tableView.backgroundColor = NotesStyle.tableViewBackgroundColor
         self.tableView.layer.cornerRadius = NotesStyle.tableViewCornerRadius
+        tableView.delegate = self
         tableView.dataSource = self
     }
     
