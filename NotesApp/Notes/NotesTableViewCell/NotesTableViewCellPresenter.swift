@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - NotesTableViewCellPresenter
-class NotesTableViewCellPresenter {
+final class NotesTableViewCellPresenter {
     
     // MARK: - Init
     init(view: NotesTableViewCellViewable,
@@ -20,11 +20,18 @@ class NotesTableViewCellPresenter {
     // MARK: - Variables
     private weak var view: NotesTableViewCellViewable!
     private var note: NoteModel
+    
+    var titlePlaceholder: String? {
+        if note.title == nil || note.title == "" {
+            return "Başlıksız"
+        }
+        return note.title
+    }
 }
 
 // MARK: - NotesTableViewCellPresentable
 extension NotesTableViewCellPresenter: NotesTableViewCellPresentable {
     func load() {
-        view.setTitle(with: note)
+        view.setTitle(with: titlePlaceholder)
     }
 }
