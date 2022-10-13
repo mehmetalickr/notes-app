@@ -52,7 +52,8 @@ final class NotesDetailPresenter: NotesDetailPresentable {
     }
     
     func viewDidLoad() {
-        view?.setupViewHierarchy()
+        view?.setupTitleTextFieldViewHierarchy()
+        view?.setupContentTextViewHierarchy()
         view?.setupConstraints()
         view?.setupTitleTextField()
         view?.setupContentTextView()

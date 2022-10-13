@@ -12,6 +12,8 @@ import UIKit
 protocol NotesDetailViewManageable: BaseViewManagable {
     func setupTitleTextField()
     func setupContentTextView()
+    func setupTitleTextFieldViewHierarchy()
+    func setupContentTextViewHierarchy()
     func setupConstraints()
     func viewNoteTitle(title: String?)
     func viewNoteContent(content: String?)
@@ -62,8 +64,11 @@ extension NotesDetailViewController: NotesDetailViewManageable {
         contentTextView.delegate = self
     }
     
-    func setupViewHierarchy() {
+    func setupTitleTextFieldViewHierarchy() {
         view.addSubview(titleTextField)
+    }
+    
+    func setupContentTextViewHierarchy() {
         view.addSubview(contentTextView)
     }
     

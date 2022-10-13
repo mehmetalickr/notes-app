@@ -43,8 +43,8 @@ final class NotesPresenter: NotesPresentable {
     }
     
     func viewDidLoad() {
-        view?.setupViewHierarchy()
-        view?.setupViewDelegate()
+        view?.setupTableViewHierarchy()
+        view?.setupAddNoteButtonViewHierarchy()
         view?.setupConstraints()
         view?.setTitle(Style.title)
         view?.setBackgroundColor(Style.viewBackgroundColor)

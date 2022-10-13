@@ -13,6 +13,8 @@ protocol NotesViewManageable: BaseViewManagable {
     func reloadTableViewData()
     func setupTableView()
     func setupAddNoteButton()
+    func setupTableViewHierarchy()
+    func setupAddNoteButtonViewHierarchy()
     func setupEditButton()
     func tableViewSelectRow(at indexPath: IndexPath)
     func tableViewDeleteRows(at indexPath: IndexPath)
@@ -103,13 +105,12 @@ extension NotesViewController: NotesViewManageable {
         navigationController?.navigationBar.tintColor = .systemYellow
     }
     
-    func setupViewHierarchy() {
+    func setupTableViewHierarchy() {
         view.addSubview(tableView)
-        view.addSubview(addNoteButton)
     }
     
-    func setupViewDelegate() {
-        tableView.delegate = self
+    func setupAddNoteButtonViewHierarchy() {
+        view.addSubview(addNoteButton)
     }
     
     func setupConstraints() {
