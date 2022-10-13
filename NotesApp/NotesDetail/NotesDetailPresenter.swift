@@ -30,8 +30,6 @@ final class NotesDetailPresenter: NotesDetailPresentable {
     // MARK: - View & Interactor & Router
     private weak var view: NotesDetailViewManageable?
     private let interactor: NotesDetailInputInteractable
-    private let router: NotesDetailRouter
-    
     private let operationType: NotesDetailOperationType
     private weak var moduleDelegate: NotesDetailModuleDelegate?
     private var selectedNote: NoteModel?
@@ -39,13 +37,11 @@ final class NotesDetailPresenter: NotesDetailPresentable {
     // MARK: - Init
     init(view: NotesDetailViewManageable? = nil,
          interactor: NotesDetailInputInteractable,
-         router: NotesDetailRouter,
          operationType: NotesDetailOperationType,
          moduleDelegate: NotesDetailModuleDelegate? = nil,
          selectedNote: NoteModel? = nil) {
         self.view = view
         self.interactor = interactor
-        self.router = router
         self.operationType = operationType
         self.moduleDelegate = moduleDelegate
         self.selectedNote = selectedNote
