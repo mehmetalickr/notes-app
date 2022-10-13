@@ -22,6 +22,10 @@ protocol NotesPresentable {
     func removeNote(id: Int)
 }
 
+protocol NotesOutputInteractable: AnyObject {
+    func notesFetched(notes: [NoteModel])
+}
+
 // MARK: - NotesPresentable
 final class NotesPresenter: NotesPresentable {
     
