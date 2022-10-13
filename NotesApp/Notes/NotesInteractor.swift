@@ -13,10 +13,6 @@ protocol NotesInputInteractable {
     func deleteNoteFromStorage(id: Int)
 }
 
-protocol NotesOutputInteractable: AnyObject {
-    func notesFetched(notes: [NoteModel])
-}
-
 // MARK: - NotesInputInteractable
 final class NotesInteractor: NotesInputInteractable {
     weak var output: NotesOutputInteractable?

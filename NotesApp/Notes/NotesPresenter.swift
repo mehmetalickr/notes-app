@@ -22,6 +22,10 @@ protocol NotesPresentable {
     func removeNote(id: Int)
 }
 
+protocol NotesOutputInteractable: AnyObject {
+    func notesFetched(notes: [NoteModel])
+}
+
 // MARK: - NotesPresentable
 final class NotesPresenter: NotesPresentable {
     
@@ -43,8 +47,8 @@ final class NotesPresenter: NotesPresentable {
     }
     
     func viewDidLoad() {
-        view?.setupViewHierarchy()
-        view?.setupViewDelegate()
+        view?.setupTableViewHierarchy()
+        view?.setupAddNoteButtonViewHierarchy()
         view?.setupConstraints()
         view?.setTitle(Style.title)
         view?.setBackgroundColor(Style.viewBackgroundColor)

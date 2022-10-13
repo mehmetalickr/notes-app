@@ -5,16 +5,17 @@
 //  Created by Mehmet Ali ÇAKIR on 14.08.2022.
 //
 
-import SnapKit
 import UIKit
 
 // MARK: - Protocol
 protocol NotesDetailViewManageable: BaseViewManagable {
     func setupTitleTextField()
     func setupContentTextView()
+    func setupTitleTextFieldViewHierarchy()
+    func setupContentTextViewHierarchy()
     func setupConstraints()
-    func viewNoteTitle(title: String?)
-    func viewNoteContent(content: String?)
+    func setTitleTextFieldText(with text: String?)
+    func setContentTextViewText(with text: String?)
 }
 
 // MARK: - NotesDetailViewController
@@ -62,32 +63,50 @@ extension NotesDetailViewController: NotesDetailViewManageable {
         contentTextView.delegate = self
     }
     
-    func setupViewHierarchy() {
+    func setupTitleTextFieldViewHierarchy() {
         view.addSubview(titleTextField)
+    }
+    
+    func setupContentTextViewHierarchy() {
         view.addSubview(contentTextView)
     }
     
     func setupConstraints() {
-        titleTextField.snp.makeConstraints { make in
-            make.height.equalTo(
-                NotesDetailStyle.titleTextFieldHeight
-            )
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.equalToSuperview()
-        }
-        contentTextView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(titleTextField.snp.bottom)
-            make.bottom.equalToSuperview()
-        }
+        NSLayoutConstraint.activate([
+            titleTextField.heightAnchor.constraint(
+                equalToConstant: NotesDetailStyle.titleTextFieldHeight
+            ),
+            titleTextField.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor
+            ),
+            titleTextField.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor
+            ),
+            titleTextField.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor
+            ),
+            contentTextView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor
+            ),
+            contentTextView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor
+            ),
+            contentTextView.topAnchor.constraint(
+                equalTo: titleTextField.bottomAnchor
+            ),
+            contentTextView.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor)
+        ])
+        titleTextField.translatesAutoresizingMaskIntoConstraints = false
+        contentTextView.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func viewNoteTitle(title: String?) {
-        titleTextField.text = title
+    func setTitleTextFieldText(with text: String?) {
+        titleTextField.text = text
     }
     
-    func viewNoteContent(content: String?) {
-        contentTextView.text = content
+    func setContentTextViewText(with text: String?) {
+        contentTextView.text = text
     }
 }
 

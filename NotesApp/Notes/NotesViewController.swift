@@ -5,7 +5,6 @@
 //  Created by Mehmet Ali ÇAKIR on 11.08.2022.
 //
 
-import SnapKit
 import UIKit
 
 // MARK: - BaseViewManagable
@@ -13,6 +12,8 @@ protocol NotesViewManageable: BaseViewManagable {
     func reloadTableViewData()
     func setupTableView()
     func setupAddNoteButton()
+    func setupTableViewHierarchy()
+    func setupAddNoteButtonViewHierarchy()
     func setupEditButton()
     func tableViewSelectRow(at indexPath: IndexPath)
     func tableViewDeleteRows(at indexPath: IndexPath)
@@ -80,6 +81,7 @@ extension NotesViewController: NotesViewManageable {
         tableView.register(NotesTableViewCell.self, forCellReuseIdentifier: NotesStyle.tableViewCellReuseIdentifier)
         tableView.backgroundColor = NotesStyle.tableViewBackgroundColor
         self.tableView.layer.cornerRadius = NotesStyle.tableViewCornerRadius
+        tableView.delegate = self
         tableView.dataSource = self
     }
     
@@ -103,36 +105,42 @@ extension NotesViewController: NotesViewManageable {
         navigationController?.navigationBar.tintColor = .systemYellow
     }
     
-    func setupViewHierarchy() {
+    func setupTableViewHierarchy() {
         view.addSubview(tableView)
+    }
+    
+    func setupAddNoteButtonViewHierarchy() {
         view.addSubview(addNoteButton)
     }
     
-    func setupViewDelegate() {
-        tableView.delegate = self
-    }
-    
     func setupConstraints() {
-        tableView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(
-                NotesStyle.tableViewLeadingTrailingInset
-            )
-            make.top.equalToSuperview().inset(
-                NotesStyle.tableViewTopInset
-            )
-            make.bottom.equalToSuperview().inset(
-                NotesStyle.tableViewBottomInset
-            )
-        }
-        
-        addNoteButton.snp.makeConstraints { make in
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(
-                NotesStyle.addNoteButtonTrailingInset
-            )
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(
-                NotesStyle.addNoteButtonTopInset
-            )
-        }
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: NotesStyle.tableViewLeadingInset
+            ),
+            tableView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: NotesStyle.tableViewTrailingInset
+            ),
+            tableView.topAnchor.constraint(
+                equalTo: view.topAnchor,
+                constant: NotesStyle.tableViewTopInset
+            ),
+            tableView.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor,
+                constant: NotesStyle.tableViewBottomInset
+            ),
+            addNoteButton.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: NotesStyle.addNoteButtonTrailingInset
+            ),
+            addNoteButton.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: NotesStyle.addNoteButtonTopInset)
+        ])
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        addNoteButton.translatesAutoresizingMaskIntoConstraints = false
     }
     
     @objc

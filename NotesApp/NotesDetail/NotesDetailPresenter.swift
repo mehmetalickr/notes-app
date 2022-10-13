@@ -30,8 +30,6 @@ final class NotesDetailPresenter: NotesDetailPresentable {
     // MARK: - View & Interactor & Router
     private weak var view: NotesDetailViewManageable?
     private let interactor: NotesDetailInputInteractable
-    private let router: NotesDetailRouter
-    
     private let operationType: NotesDetailOperationType
     private weak var moduleDelegate: NotesDetailModuleDelegate?
     private var selectedNote: NoteModel?
@@ -39,20 +37,19 @@ final class NotesDetailPresenter: NotesDetailPresentable {
     // MARK: - Init
     init(view: NotesDetailViewManageable? = nil,
          interactor: NotesDetailInputInteractable,
-         router: NotesDetailRouter,
          operationType: NotesDetailOperationType,
          moduleDelegate: NotesDetailModuleDelegate? = nil,
          selectedNote: NoteModel? = nil) {
         self.view = view
         self.interactor = interactor
-        self.router = router
         self.operationType = operationType
         self.moduleDelegate = moduleDelegate
         self.selectedNote = selectedNote
     }
     
     func viewDidLoad() {
-        view?.setupViewHierarchy()
+        view?.setupTitleTextFieldViewHierarchy()
+        view?.setupContentTextViewHierarchy()
         view?.setupConstraints()
         view?.setupTitleTextField()
         view?.setupContentTextView()
@@ -60,8 +57,8 @@ final class NotesDetailPresenter: NotesDetailPresentable {
     }
     
     func didUserViewNotes(title: String?, content: String?) {
-        view?.viewNoteTitle(title: title)
-        view?.viewNoteContent(content: content)
+        view?.setTitleTextFieldText(with: title)
+        view?.setContentTextViewText(with: content)
     }
     
     func userDidSaveNote(title: String?, content: String?) {
@@ -107,7 +104,7 @@ final class NotesDetailPresenter: NotesDetailPresentable {
         }
         let substringToReplace = textField[rangeOfTextToReplace]
         let count = textField.count - substringToReplace.count + string.count
-        return count <= 20
+        return count <= NotesDetailStyle.titleTextFieldMaxCharacters
     }
     
     private func updateNote(selectedNoteID: String, title: String?, content: String?) {

@@ -7,13 +7,8 @@
 
 import Foundation
 
-// MARK: - Protocol
-protocol NotesBuildable {
-    static func build() -> NotesViewController
-}
-
-// MARK: - NotesBuildable
-final class NotesBuilder: NotesBuildable {
+// MARK: - NotesBuilder
+final class NotesBuilder {
     static func build() -> NotesViewController {
         let view = NotesViewController()
         let router = NotesRouter()

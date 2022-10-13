@@ -8,5 +8,5 @@
 import Foundation
  
 protocol NotesTableViewCellViewable: AnyObject {
-    func setTitle(with note: NoteModel)
+    func setTitle(with text: String?)
 }
