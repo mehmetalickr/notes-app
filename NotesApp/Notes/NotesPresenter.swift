@@ -10,8 +10,9 @@ import UIKit
 
 // MARK: - Protocol
 protocol NotesPresentable {
+    var numberOfNotes: Int { get }
+
     func viewDidLoad()
-    func numberOfNote() -> Int
     func note(at index: Int) -> NoteModel?
     func didSetupAddNoteButton()
     func didTableViewSelectRow(at indexPath: IndexPath)
@@ -36,6 +37,10 @@ final class NotesPresenter: NotesPresentable {
     
     private var notes: [NoteModel]?
     
+    var numberOfNotes: Int {
+        notes?.count ?? .zero
+    }
+    
     // MARK: - Init
     init(view: NotesViewManageable? = nil,
          interactor: NotesInputInteractable,
@@ -56,10 +61,6 @@ final class NotesPresenter: NotesPresentable {
         view?.setupAddNoteButton()
         view?.setupEditButton()
         interactor.fetchNotes()
-    }
-    
-    func numberOfNote() -> Int {
-        notes?.count ?? .zero
     }
     
     func note(at index: Int) -> NoteModel? {

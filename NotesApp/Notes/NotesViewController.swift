@@ -39,8 +39,7 @@ final class NotesViewController: UIViewController {
 extension NotesViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numberOfNote = presenter.numberOfNote()
-        return numberOfNote
+        presenter.numberOfNotes
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
