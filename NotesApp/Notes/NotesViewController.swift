@@ -9,6 +9,8 @@ import UIKit
 
 // MARK: - BaseViewManagable
 protocol NotesViewManageable: BaseViewManagable {
+    var isTableViewEditing: Bool { get set }
+    
     func reloadTableViewData()
     func setupTableView()
     func setupAddNoteButton()
@@ -24,6 +26,15 @@ final class NotesViewController: UIViewController {
     
     // MARK: - Variables
     var presenter: NotesPresentable!
+    
+    var isTableViewEditing: Bool {
+        get {
+            return tableView.isEditing
+        }
+        set {
+            tableView.isEditing = newValue
+        }
+    }
     
     private let tableView = UITableView()
     private let addNoteButton = UIButton()
@@ -149,7 +160,7 @@ extension NotesViewController: NotesViewManageable {
     
     @objc
     func editButtonTapped(sender: UIBarButtonItem) {
-        presenter.editButtonTapped(tableView: tableView, navigationItem: navigationItem)
+        presenter.editButtonTapped()
     }
     
     func reloadTableViewData() {
