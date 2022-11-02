@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 // MARK: - Protocols
 protocol NotesDetailPresentable {
@@ -14,7 +13,7 @@ protocol NotesDetailPresentable {
     func getNoteDetails()
     func editNote(title: String, content: String)
     func didUserViewNotes(title: String?, content: String?)
-    func didSetTitleTextFieldsCharacterLimit(textField: UITextField,
+    func didSetTitleTextFieldsCharacterLimit(text: String?,
                                              shouldChangeCharactersIn range: NSRange,
                                              replacementString string: String) -> Bool
     func userDidSaveNote(title: String?, content: String?)
@@ -95,15 +94,15 @@ final class NotesDetailPresenter: NotesDetailPresentable {
         interactor.updateNote(id: id, title: title, content: content)
     }
     
-    func didSetTitleTextFieldsCharacterLimit(textField: UITextField,
+    func didSetTitleTextFieldsCharacterLimit(text: String?,
                                              shouldChangeCharactersIn range: NSRange,
                                              replacementString string: String) -> Bool {
-        guard let textField = textField.text,
-              let rangeOfTextToReplace = Range(range, in: textField) else {
+        guard let text = text,
+              let rangeOfTextToReplace = Range(range, in: text) else {
             return false
         }
-        let substringToReplace = textField[rangeOfTextToReplace]
-        let count = textField.count - substringToReplace.count + string.count
+        let substringToReplace = text[rangeOfTextToReplace]
+        let count = text.count - substringToReplace.count + string.count
         return count <= NotesDetailStyle.titleTextFieldMaxCharacters
     }
     
