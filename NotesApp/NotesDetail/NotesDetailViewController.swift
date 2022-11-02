@@ -123,7 +123,7 @@ extension NotesDetailViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        presenter.didSetTitleTextFieldsCharacterLimit(textField: titleTextField,
+        presenter.didSetTitleTextFieldsCharacterLimit(text: titleTextField.text,
                                                       shouldChangeCharactersIn: range,
                                                       replacementString: string)
     }

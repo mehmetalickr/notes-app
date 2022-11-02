@@ -11,6 +11,7 @@ import UIKit
 protocol BaseViewManagable: BaseLayoutLoadable where Self: UIViewController {
     func setTitle(_ title: String?)
     func setBackgroundColor(_ color: UIColor)
+    func setNavigationBarItemTitle(_ title: String?)
 }
 
 // MARK: - BaseViewManagable
@@ -21,5 +22,9 @@ extension BaseViewManagable {
     
     func setBackgroundColor(_ color: UIColor) {
         view.backgroundColor = color
+    }
+    
+    func setNavigationBarItemTitle(_ title: String?) {
+        navigationItem.rightBarButtonItem?.title = title
     }
 }

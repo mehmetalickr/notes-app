@@ -6,18 +6,18 @@
 //
 
 import Foundation
-import UIKit
 
 // MARK: - Protocol
 protocol NotesPresentable {
+    var numberOfNotes: Int { get }
+    
     func viewDidLoad()
-    func numberOfNote() -> Int
     func note(at index: Int) -> NoteModel?
     func didSetupAddNoteButton()
     func didTableViewSelectRow(at indexPath: IndexPath)
     func didTableViewDeleteRows(at indexPath: IndexPath)
     func addNoteButtonTapped()
-    func editButtonTapped(tableView: UITableView, navigationItem: UINavigationItem)
+    func editButtonTapped()
     func showNoteDetails(selectedNote: NoteModel)
     func removeNote(id: Int)
 }
@@ -35,6 +35,10 @@ final class NotesPresenter: NotesPresentable {
     private let router: NotesRoutable
     
     private var notes: [NoteModel]?
+    
+    var numberOfNotes: Int {
+        notes?.count ?? .zero
+    }
     
     // MARK: - Init
     init(view: NotesViewManageable? = nil,
@@ -56,10 +60,6 @@ final class NotesPresenter: NotesPresentable {
         view?.setupAddNoteButton()
         view?.setupEditButton()
         interactor.fetchNotes()
-    }
-    
-    func numberOfNote() -> Int {
-        notes?.count ?? .zero
     }
     
     func note(at index: Int) -> NoteModel? {
@@ -86,16 +86,16 @@ final class NotesPresenter: NotesPresentable {
         router.routeToAddNotesDetail(moduleDelegate: self)
     }
     
-    func editButtonTapped(tableView: UITableView, navigationItem: UINavigationItem) {
-        if(tableView.isEditing == true)
+    func editButtonTapped() {
+        if(view?.isTableViewEditing == true)
         {
-            navigationItem.rightBarButtonItem?.title = NotesStyle.editButtonTitle
-            tableView.isEditing = false
+            view?.setNavigationBarItemTitle(NotesStyle.editButtonTitle)
+            view?.isTableViewEditing = false
         }
         else
         {
-            tableView.isEditing = true
-            navigationItem.rightBarButtonItem?.title = NotesStyle.doneButtonTitle
+            view?.isTableViewEditing = true
+            view?.setNavigationBarItemTitle(NotesStyle.doneButtonTitle)
         }
     }
     
