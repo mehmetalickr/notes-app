@@ -17,6 +17,7 @@ protocol NotesViewManageable: BaseViewManagable {
     func setupTableViewHierarchy()
     func setupAddNoteButtonViewHierarchy()
     func setupEditButton()
+    func hideEditButton()
     func tableViewSelectRow(at indexPath: IndexPath)
     func tableViewDeleteRows(at indexPath: IndexPath)
 }
@@ -115,6 +116,10 @@ extension NotesViewController: NotesViewManageable {
         navigationController?.navigationBar.tintColor = .systemYellow
     }
     
+    func hideEditButton() {
+        navigationItem.setRightBarButton(nil, animated: true)
+    }
+    
     func setupTableViewHierarchy() {
         view.addSubview(tableView)
     }
@@ -173,5 +178,6 @@ extension NotesViewController: NotesViewManageable {
     
     func tableViewDeleteRows(at indexPath: IndexPath) {
         tableView.deleteRows(at: [indexPath], with: .automatic)
+        presenter.checkEditButtonVisibility()
     }
 }

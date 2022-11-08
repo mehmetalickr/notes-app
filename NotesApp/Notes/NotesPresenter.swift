@@ -18,6 +18,7 @@ protocol NotesPresentable {
     func didTableViewDeleteRows(at indexPath: IndexPath)
     func addNoteButtonTapped()
     func editButtonTapped()
+    func checkEditButtonVisibility()
     func showNoteDetails(selectedNote: NoteModel)
     func removeNote(id: Int)
 }
@@ -99,6 +100,14 @@ final class NotesPresenter: NotesPresentable {
         }
     }
     
+    func checkEditButtonVisibility() {
+        if notes?.isEmpty ?? false {
+            view?.hideEditButton()
+        } else {
+            view?.setupEditButton()
+        }
+    }
+    
     func showNoteDetails(selectedNote: NoteModel) {
         router.routeToUpdateNotesDetail(moduleDelegate: self,
                                         selectedNote: selectedNote)
@@ -113,6 +122,7 @@ final class NotesPresenter: NotesPresentable {
 extension NotesPresenter: NotesOutputInteractable {
     func notesFetched(notes: [NoteModel]) {
         self.notes = notes
+        checkEditButtonVisibility()
         view?.reloadTableViewData()
     }
 }

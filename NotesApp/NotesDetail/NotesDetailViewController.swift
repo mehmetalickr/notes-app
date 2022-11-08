@@ -40,7 +40,7 @@ extension NotesDetailViewController: NotesDetailViewManageable {
     
     // MARK: - Setup Title Text Field
     func setupTitleTextField() {
-        titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange), for: .editingChanged)
+        titleTextField.addTarget(self, action: #selector(showSavedNote), for: .editingChanged)
         titleTextField.font = UIFont.systemFont(ofSize: NotesDetailStyle.titleTextFieldFontSize,
                                                 weight: .bold)
         titleTextField.placeholder = NotesDetailStyle.titlePlaceholder
@@ -113,12 +113,13 @@ extension NotesDetailViewController: NotesDetailViewManageable {
 // MARK: - Events
 extension NotesDetailViewController {
     @objc
-    private func titleTextFieldDidChange() {
-        presenter.userDidSaveNote(title: titleTextField.text,
+    private func showSavedNote() {
+        presenter.userDidSaveNote(title: titleTextField.text, // isimlendirme userdidsave -- didtitletextfielddid change yapılabilr
                                   content: contentTextView.text)
     }
 }
 
+// MARK: - UITextFieldDelegate
 extension NotesDetailViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
@@ -129,10 +130,10 @@ extension NotesDetailViewController: UITextFieldDelegate {
     }
 }
 
-// MARK: - Setup Content Text View
+// MARK: - UITextViewDelegate
 extension NotesDetailViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        presenter.userDidSaveNote(title: titleTextField.text,
+        presenter.userDidSaveNote(title: titleTextField.text, // isimlnendirme aynı yukaı
                                   content: contentTextView.text)
     }
 }
