@@ -14,6 +14,7 @@ protocol NotesViewManageable: BaseViewManagable {
     func reloadTableViewData()
     func setupTableView()
     func setupAddNoteButton()
+    func setupConstraints()
     func setupTableViewHierarchy()
     func setupAddNoteButtonViewHierarchy()
     func setupEditButton()
