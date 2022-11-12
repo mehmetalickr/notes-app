@@ -17,13 +17,11 @@
 		472CE82128A5449000CC41EB /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE82028A5449000CC41EB /* NotesViewController.swift */; };
 		472CE82328A5461500CC41EB /* NotesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE82228A5461500CC41EB /* NotesInteractor.swift */; };
 		472CE82528A5465500CC41EB /* NotesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE82428A5465500CC41EB /* NotesPresenter.swift */; };
-		4759224128CB87B30000DEC0 /* BaseLayoutLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4759224028CB87B30000DEC0 /* BaseLayoutLoadable.swift */; };
 		4759224328CFA9340000DEC0 /* NotesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4759224228CFA9340000DEC0 /* NotesTableViewCell.swift */; };
 		4759224828D1096D0000DEC0 /* NotesTableViewCellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4759224728D1096D0000DEC0 /* NotesTableViewCellPresenter.swift */; };
 		4759224A28D109AF0000DEC0 /* NotesConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4759224928D109AF0000DEC0 /* NotesConstants.swift */; };
 		4759224C28D10A510000DEC0 /* NotesDetailConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4759224B28D10A510000DEC0 /* NotesDetailConstants.swift */; };
 		4759225028D74F320000DEC0 /* NotesTableViewCellPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4759224F28D74F320000DEC0 /* NotesTableViewCellPresentable.swift */; };
-		4759225228D752E10000DEC0 /* NotesTableViewCellViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4759225128D752E10000DEC0 /* NotesTableViewCellViewable.swift */; };
 		4772A77328A5D7A3007B81AD /* NotesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4772A77228A5D7A3007B81AD /* NotesRouter.swift */; };
 		4772A78228A850C3007B81AD /* NoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4772A78128A850C3007B81AD /* NoteModel.swift */; };
 		4772A78A28A93F34007B81AD /* NotesDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4772A78928A93F34007B81AD /* NotesDetailViewController.swift */; };
@@ -51,13 +49,11 @@
 		472CE82028A5449000CC41EB /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
 		472CE82228A5461500CC41EB /* NotesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesInteractor.swift; sourceTree = "<group>"; };
 		472CE82428A5465500CC41EB /* NotesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesPresenter.swift; sourceTree = "<group>"; };
-		4759224028CB87B30000DEC0 /* BaseLayoutLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLayoutLoadable.swift; sourceTree = "<group>"; };
 		4759224228CFA9340000DEC0 /* NotesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesTableViewCell.swift; sourceTree = "<group>"; };
 		4759224728D1096D0000DEC0 /* NotesTableViewCellPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesTableViewCellPresenter.swift; sourceTree = "<group>"; };
 		4759224928D109AF0000DEC0 /* NotesConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesConstants.swift; sourceTree = "<group>"; };
 		4759224B28D10A510000DEC0 /* NotesDetailConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesDetailConstants.swift; sourceTree = "<group>"; };
 		4759224F28D74F320000DEC0 /* NotesTableViewCellPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesTableViewCellPresentable.swift; sourceTree = "<group>"; };
-		4759225128D752E10000DEC0 /* NotesTableViewCellViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesTableViewCellViewable.swift; sourceTree = "<group>"; };
 		4772A77228A5D7A3007B81AD /* NotesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesRouter.swift; sourceTree = "<group>"; };
 		4772A78128A850C3007B81AD /* NoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteModel.swift; sourceTree = "<group>"; };
 		4772A78928A93F34007B81AD /* NotesDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesDetailViewController.swift; sourceTree = "<group>"; };
@@ -142,7 +138,6 @@
 			children = (
 				4759224228CFA9340000DEC0 /* NotesTableViewCell.swift */,
 				4759224728D1096D0000DEC0 /* NotesTableViewCellPresenter.swift */,
-				4759225128D752E10000DEC0 /* NotesTableViewCellViewable.swift */,
 				4759224F28D74F320000DEC0 /* NotesTableViewCellPresentable.swift */,
 			);
 			path = NotesTableViewCell;
@@ -186,7 +181,6 @@
 			isa = PBXGroup;
 			children = (
 				47C2F0A428C62114000EF30B /* BaseViewManagable.swift */,
-				4759224028CB87B30000DEC0 /* BaseLayoutLoadable.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -343,7 +337,6 @@
 				47DA406F28BF8FFA004DFCAB /* NotesDetailModuleDelegate.swift in Sources */,
 				4759224C28D10A510000DEC0 /* NotesDetailConstants.swift in Sources */,
 				477B0AFE28AC6176002ADFB8 /* Constants.swift in Sources */,
-				4759224128CB87B30000DEC0 /* BaseLayoutLoadable.swift in Sources */,
 				4772A78C28A93F74007B81AD /* NotesDetailPresenter.swift in Sources */,
 				47C2F0A528C62114000EF30B /* BaseViewManagable.swift in Sources */,
 				47E5484828AE5B0C00F40959 /* NotesDetailBuilder.swift in Sources */,
@@ -355,7 +348,6 @@
 				4772A78A28A93F34007B81AD /* NotesDetailViewController.swift in Sources */,
 				472CE80B28A5387600CC41EB /* SceneDelegate.swift in Sources */,
 				4759224A28D109AF0000DEC0 /* NotesConstants.swift in Sources */,
-				4759225228D752E10000DEC0 /* NotesTableViewCellViewable.swift in Sources */,
 				472CE82328A5461500CC41EB /* NotesInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

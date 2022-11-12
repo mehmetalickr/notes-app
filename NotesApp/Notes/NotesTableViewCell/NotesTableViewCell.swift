@@ -28,7 +28,6 @@ final class NotesTableViewCell: UITableViewCell {
 
 // MARK: - NotesTableViewCellTitleViewable
 extension NotesTableViewCell: NotesTableViewCellViewable {
-    
     func setTitle(with text: String?) {
         textLabel?.text = text 
     }

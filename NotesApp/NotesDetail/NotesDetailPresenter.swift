@@ -113,7 +113,6 @@ final class NotesDetailPresenter: NotesDetailPresentable {
 
 // MARK: - NotesDetailOutputInteractable
 extension NotesDetailPresenter: NotesDetailOutputInteractable {
-    
     func didNoteUpdated(note: NoteModel) {
         moduleDelegate?.notesUpdated(with: note)
         self.selectedNote = note

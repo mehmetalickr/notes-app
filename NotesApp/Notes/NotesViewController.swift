@@ -50,7 +50,6 @@ final class NotesViewController: UIViewController {
 
 // MARK: - UITableViewDataSource
 extension NotesViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         presenter.numberOfNotes
     }
@@ -69,7 +68,6 @@ extension NotesViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension NotesViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter.didTableViewSelectRow(at: indexPath)
     }
