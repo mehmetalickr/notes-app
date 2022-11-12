@@ -27,11 +27,11 @@ protocol NotesOutputInteractable: AnyObject {
     func notesFetched(notes: [NoteModel])
 }
 
-// MARK: - NotesPresentable
-final class NotesPresenter: NotesPresentable {
+// MARK: - NotesPresenter
+final class NotesPresenter {
     
     // MARK: - View & Interactor & Router
-    weak var view: NotesViewManageable?
+    private weak var view: NotesViewManageable?
     private let interactor: NotesInputInteractable
     private let router: NotesRoutable
     
@@ -50,7 +50,10 @@ final class NotesPresenter: NotesPresentable {
         self.interactor = interactor
         self.router = router
     }
-    
+}
+
+// MARK: - NotesPresentable
+extension NotesPresenter: NotesPresentable {
     func viewDidLoad() {
         view?.setupTableViewHierarchy()
         view?.setupAddNoteButtonViewHierarchy()
@@ -88,20 +91,17 @@ final class NotesPresenter: NotesPresentable {
     }
     
     func editButtonTapped() {
-        if(view?.isTableViewEditing == true)
-        {
+        if(view?.isTableViewEditing == true) {
             view?.setNavigationBarItemTitle(NotesStyle.editButtonTitle)
             view?.isTableViewEditing = false
-        }
-        else
-        {
+        } else {
             view?.isTableViewEditing = true
             view?.setNavigationBarItemTitle(NotesStyle.doneButtonTitle)
         }
     }
     
     func checkEditButtonVisibility() {
-        if notes?.isEmpty ?? false {
+        if notes?.isEmpty == true {
             view?.hideEditButton()
         } else {
             view?.setupEditButton()

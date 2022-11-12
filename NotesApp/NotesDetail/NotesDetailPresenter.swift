@@ -24,7 +24,7 @@ protocol NotesDetailOutputInteractable: AnyObject {
 }
 
 // MARK: - NotesDetailPresenter
-final class NotesDetailPresenter: NotesDetailPresentable {
+final class NotesDetailPresenter {
     
     // MARK: - View & Interactor & Router
     private weak var view: NotesDetailViewManageable?
@@ -45,7 +45,10 @@ final class NotesDetailPresenter: NotesDetailPresentable {
         self.moduleDelegate = moduleDelegate
         self.selectedNote = selectedNote
     }
-    
+}
+
+// MARK: - NotesDetailPresentable
+extension NotesDetailPresenter: NotesDetailPresentable {
     func viewDidLoad() {
         view?.setupTitleTextFieldViewHierarchy()
         view?.setupContentTextViewHierarchy()
