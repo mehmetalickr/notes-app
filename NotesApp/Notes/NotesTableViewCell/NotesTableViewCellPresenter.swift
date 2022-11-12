@@ -7,6 +7,11 @@
 
 import Foundation
 
+// MARK: - NotesTableViewCellViewable
+protocol NotesTableViewCellViewable: AnyObject {
+    func setTitle(with text: String?)
+}
+
 // MARK: - NotesTableViewCellPresenter
 final class NotesTableViewCellPresenter {
     
