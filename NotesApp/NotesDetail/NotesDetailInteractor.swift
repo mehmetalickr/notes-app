@@ -26,7 +26,6 @@ final class NotesDetailInteractor {
 
 // MARK: - NotesDetailInputInteractable
 extension NotesDetailInteractor: NotesDetailInputInteractable {
-    
     func createNote(note: NoteModel) {
         storage.appendNote(note: note)
         output?.didNoteUpdated(note: note)

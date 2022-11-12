@@ -14,9 +14,11 @@ protocol NotesViewManageable: BaseViewManagable {
     func reloadTableViewData()
     func setupTableView()
     func setupAddNoteButton()
+    func setupConstraints()
     func setupTableViewHierarchy()
     func setupAddNoteButtonViewHierarchy()
     func setupEditButton()
+    func hideEditButton()
     func tableViewSelectRow(at indexPath: IndexPath)
     func tableViewDeleteRows(at indexPath: IndexPath)
 }
@@ -48,7 +50,6 @@ final class NotesViewController: UIViewController {
 
 // MARK: - UITableViewDataSource
 extension NotesViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         presenter.numberOfNotes
     }
@@ -67,7 +68,6 @@ extension NotesViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension NotesViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter.didTableViewSelectRow(at: indexPath)
     }
@@ -113,6 +113,10 @@ extension NotesViewController: NotesViewManageable {
                                                   target: self,
                                                   action: #selector(editButtonTapped))
         navigationController?.navigationBar.tintColor = .systemYellow
+    }
+    
+    func hideEditButton() {
+        navigationItem.setRightBarButton(nil, animated: true)
     }
     
     func setupTableViewHierarchy() {
@@ -173,5 +177,6 @@ extension NotesViewController: NotesViewManageable {
     
     func tableViewDeleteRows(at indexPath: IndexPath) {
         tableView.deleteRows(at: [indexPath], with: .automatic)
+        presenter.checkEditButtonVisibility()
     }
 }

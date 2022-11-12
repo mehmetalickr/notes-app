@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: - Protocol
-protocol BaseViewManagable: BaseLayoutLoadable where Self: UIViewController {
+protocol BaseViewManagable where Self: UIViewController {
     func setTitle(_ title: String?)
     func setBackgroundColor(_ color: UIColor)
     func setNavigationBarItemTitle(_ title: String?)

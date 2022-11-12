@@ -21,7 +21,7 @@ enum NotesStyle {
     static let tableViewLeadingInset: CGFloat = 20
     static let tableViewTrailingInset: CGFloat = -20
     static let tableViewTopInset: CGFloat = 200
-    static let tableViewBottomInset: CGFloat = 50
+    static let tableViewBottomInset: CGFloat = -50
     // MARK: - Add Note Button Constants
     static let addNoteButtonImage = "note.text.badge.plus"
     static let addNoteButtonSize: CGFloat = 20
