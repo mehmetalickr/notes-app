@@ -114,7 +114,7 @@ extension NotesDetailViewController: NotesDetailViewManageable {
 extension NotesDetailViewController {
     @objc
     private func showSavedNote() {
-        presenter.userDidSaveNote(title: titleTextField.text, // isimlendirme userdidsave -- didtitletextfielddid change yapılabilr
+        presenter.userDidSaveNote(title: titleTextField.text,
                                   content: contentTextView.text)
     }
 }
@@ -133,7 +133,7 @@ extension NotesDetailViewController: UITextFieldDelegate {
 // MARK: - UITextViewDelegate
 extension NotesDetailViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        presenter.userDidSaveNote(title: titleTextField.text, // isimlnendirme aynı yukaı
+        presenter.userDidSaveNote(title: titleTextField.text,
                                   content: contentTextView.text)
     }
 }
